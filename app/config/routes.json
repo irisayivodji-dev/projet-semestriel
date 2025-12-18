@@ -1,0 +1,27 @@
+[
+  {
+    "path": "/artist",
+    "method": "GET",
+    "controller": "GetArtistsController"
+  },
+  {
+    "path": "/artist/:id",
+    "method": "GET",
+    "controller": "GetArtistController"
+  },
+  {
+    "path": "/artist",
+    "method": "POST",
+    "controller": "PostArtistController"
+  },
+  {
+    "path": "/artist/:id",
+    "method": "PATCH",
+    "controller": "PatchArtistController"
+  },
+  {
+    "path": "/artist/:id",
+    "method": "DELETE",
+    "controller": "DeleteArtistController"
+  }
+]
