@@ -27,26 +27,41 @@
   {
     "path": "/users",
     "method": "GET",
-    "controller": "GetUsersController"
+    "controller": "Users\\GetUsersController"
   },
   {
     "path": "/users/:id",
     "method": "GET",
-    "controller": "GetUserController"
+    "controller": "Users\\GetUserController"
   },
   {
     "path": "/users",
     "method": "POST",
-    "controller": "PostUserController"
+    "controller": "Users\\PostUserController"
   },
   {
     "path": "/users/:id",
     "method": "PATCH",
-    "controller": "PatchUserController"
+    "controller": "Users\\PatchUserController"
   },
   {
     "path": "/users/:id",
     "method": "DELETE",
-    "controller": "DeleteUserController"
+    "controller": "Users\\DeleteUserController"
+  },
+  {
+    "path": "/login",
+    "method": "POST",
+    "controller": "Auth\\LoginController"
+  },
+  {
+    "path": "/logout",
+    "method": "POST",
+    "controller": "Auth\\LogoutController"
+  },
+  {
+    "path": "/profile",
+    "method": "GET",
+    "controller": "Auth\\ProfileController"
   }
 ]
