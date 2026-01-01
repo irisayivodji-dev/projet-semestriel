@@ -1,7 +1,7 @@
 {
-  "host": "php-framework-mysql",
-  "user": "root",
+  "host": "php-framework-postgres",
+  "user": "user",
   "password": "password",
-  "database": "test",
-  "port": 3306
+  "database": "db",
+  "port": 5432
 }

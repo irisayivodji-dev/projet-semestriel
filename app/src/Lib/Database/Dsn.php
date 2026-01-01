@@ -20,7 +20,7 @@ class Dsn {
         $this->password = $config['password'];
         $this->dbname = $config['database'];
         $this->port = $config['port'];
-        $this->dsn = 'mysql:';
+        $this->dsn = 'pgsql:';
     }
 
     public function getUser(): string {

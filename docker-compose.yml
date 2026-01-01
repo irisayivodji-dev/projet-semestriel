@@ -8,22 +8,18 @@ services:
                - ./app:/var/www/html
                - ./log:/var/log/apache2/
           ports:
-               - 8079:79
-               - 8888:8000
-     php-framework-mysql:
-          image: mysql:latest
-          container_name: php-mysql-CMS
+               - 8079:80
+     php-framework-postgres:
+          image: postgres:16-alpine
+          container_name: php-postgres-CMS
           restart: unless-stopped
           environment:
-            MYSQL_DATABASE: 'db'
-            # So you don't have to use root, but you can if you like
-            MYSQL_USER: 'user'
-            # You can use whatever password you like
-            MYSQL_PASSWORD: 'password'
-            # Password for root access
-            MYSQL_ROOT_PASSWORD: 'password'
+            POSTGRES_DB: 'db'
+            POSTGRES_USER: 'user'
+            POSTGRES_PASSWORD: 'password'
           ports:
-            - '3307:3307'
+            - '5433:5432'
           volumes:
-            - ./mysql:/var/lib/mysql
+            - ./postgres:/var/lib/postgresql/data
+            - ./database/init:/docker-entrypoint-initdb.d
      
