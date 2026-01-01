@@ -3,58 +3,147 @@
 Projet semestriel – Bloc 2 RNCP39235
 
 ## Description
-Développement d’un CMS éditorial multi-auteurs en PHP orienté objet, basé sur un framework maison.
+CMS éditorial multi-auteurs en PHP orienté objet. On utilise un framework développé spécialement pour ce projet.
 
-## Outils
-- PHP
-- Docker
-- PostgreSQL
+## Technologies
+- PHP 8.4 avec Apache
+- PostgreSQL 16
+- Docker & Docker Compose
+- Composer pour l'autoload
 - Git / GitHub
 
 ## Organisation
-Le projet est piloté selon une méthodologie SCRUM avec des sprints de deux semaines.
+Méthodologie SCRUM avec des sprints de 2 semaines.
 
-## Docker
+## Installation
 
-Pour lancer l’environnement de développement :
+### Prérequis
+- Docker Desktop
+- Git
 
-docker-compose up -d
+### Démarrage
 
-## Règles de contribution
-- Commits clairs et descriptifs
-- Respect de la convention de commit
-- Une fonctionnalité par commit
-- Respect de la convention de nommage des branches
+Cloner le repo :
+```bash
+git clone https://github.com/yascodev/projet-semestriel.git
+cd projet-semestriel
+```
 
-## Convention de nommage des branches
+Lancer Docker :
+```bash
+docker-compose up -d --build
+```
 
-Format : `type/description-courte`
+Installer Composer :
+```bash
+docker exec -it php-CMS bash -c "cd /var/www/html && composer install"
+```
 
-Types de branches :
+Vérifier la BDD :
+```bash
+docker exec -it php-postgres-CMS psql -U user -d db -c "\dt"
+```
 
-- **feature/** : nouvelle fonctionnalité (ex: `feature/user-authentication`)
-- **fix/** : correction de bug (ex: `fix/login-error`)
-- **hotfix/** : correction urgente en production (ex: `hotfix/security-patch`)
-- **chore/** : tâches techniques/configuration (ex: `chore/setup-docker`)
-- **docs/** : documentation uniquement (ex: `docs/api-documentation`)
+Tester l'API : http://localhost:8079/users
+
+## Configuration
+
+### Conteneurs
+- `php-CMS` : port 8079
+- `php-postgres-CMS` : port 5433
+
+### Base de données
+```
+Host: php-framework-postgres
+Port: 5432
+Database: db
+User: user
+Password: password
+```
+
+Compte admin auto-créé :
+- Email : admin@cms.local
+- Mot de passe : admin123
+
+### Commandes Docker
+
+Voir les logs :
+```bash
+docker logs php-CMS
+docker logs php-postgres-CMS
+```
+
+Accéder aux conteneurs :
+```bash
+docker exec -it php-CMS bash
+docker exec -it php-postgres-CMS psql -U user -d db
+```
+
+Arrêter :
+```bash
+docker-compose down
+```
+
+## API
+
+### Endpoints
+
+| Méthode | URL | Description |
+|---------|-----|-------------|
+| GET | /users | Liste des users |
+| GET | /users/:id | Détail user |
+| POST | /users | Créer user |
+| PATCH | /users/:id | Modifier user |
+| DELETE | /users/:id | Supprimer user |
 
 Exemples :
+```bash
+curl http://localhost:8079/users
+curl http://localhost:8079/users/1
+```
 
+## Structure du code
+
+```
+app/
+├── src/
+│   ├── Controllers/      # Un controller par action
+│   ├── Entities/         # Classes métier (User, Article...)
+│   ├── Repositories/     # Accès BDD
+│   ├── Lib/              # Framework (Http, Database, ORM...)
+│   └── index.php
+├── config/
+│   ├── routes.json
+│   └── database.json
+└── composer.json
+
+database/init/            # Scripts SQL (lancés au premier démarrage)
+```
+
+
+## Règles de contribution
+
+### Branches
+Format : `type/description-courte`
+
+Types :
+- `feature/` : nouvelle fonctionnalité
+- `fix/` : correction de bug
+- `chore/` : config/maintenance
+- `docs/` : documentation
+
+Exemples :
 - `feature/add-blog-posts`
 - `fix/database-connection`
-- `chore/update-dependencies`
 
-## Convention de commit
-
+### Commits
 Format : `type: description courte`
 
-Types autorisés :
+Types :
+- `feat` : nouvelle fonctionnalité
+- `fix` : correction de bug
+- `chore` : configuration / maintenance
+- `docs` : documentation
 
-- feat : nouvelle fonctionnalité
-- fix : correction de bug
-- chore : configuration / maintenance
-- docs : documentation
-
-## Règle de validation des issues
-
-Toute issue doit être testée et validée par au moins un autre membre de l’équipe avant d’être déplacée dans la colonne “Terminé”.
+### Validation
+Toute issue doit être testée et validée par au moins un autre membre de l'équipe avant d'être marquée comme terminée.
