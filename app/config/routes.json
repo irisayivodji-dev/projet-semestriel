@@ -78,5 +78,15 @@
     "path": "/articles",
     "method": "POST",
     "controller": "Articles\\CreateArticleController"
+  },
+  {
+    "path": "/articles/:id",
+    "method": "PATCH",
+    "controller": "Articles\\PatchArticleController"
+  },
+  {
+    "path": "/articles/:id",
+    "method": "DELETE",
+    "controller": "Articles\\DeleteArticleController"
   }
 ]
