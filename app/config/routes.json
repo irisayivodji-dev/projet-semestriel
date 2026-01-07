@@ -63,5 +63,20 @@
     "path": "/profile",
     "method": "GET",
     "controller": "Auth\\ProfileController"
+  },
+  {
+    "path": "/articles",
+    "method": "GET",
+    "controller": "Articles\\GetArticlesController"
+  },
+  {
+    "path": "/articles/:id",
+    "method": "GET",
+    "controller": "Articles\\GetArticleController"
+  },
+  {
+    "path": "/articles",
+    "method": "POST",
+    "controller": "Articles\\CreateArticleController"
   }
 ]
