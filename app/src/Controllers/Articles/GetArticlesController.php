@@ -11,9 +11,8 @@ class GetArticlesController extends AbstractController {
     public function process(Request $request): Response
     {
         $articleRepository = new ArticleRepository();
-        
-        $articles = $articleRepository->findAll();
-        
+        // Par défaut, on ne retourne que les articles publiés
+        $articles = $articleRepository->findByStatus('published');
         return new Response(json_encode($articles), 200, ['Content-Type' => 'application/json']);
     }
 }
