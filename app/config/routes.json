@@ -63,5 +63,30 @@
     "path": "/profile",
     "method": "GET",
     "controller": "Auth\\ProfileController"
+  },
+  {
+    "path": "/articles",
+    "method": "GET",
+    "controller": "Articles\\GetArticlesController"
+  },
+  {
+    "path": "/articles/:id",
+    "method": "GET",
+    "controller": "Articles\\GetArticleController"
+  },
+  {
+    "path": "/articles",
+    "method": "POST",
+    "controller": "Articles\\CreateArticleController"
+  },
+  {
+    "path": "/articles/:id",
+    "method": "PATCH",
+    "controller": "Articles\\PatchArticleController"
+  },
+  {
+    "path": "/articles/:id",
+    "method": "DELETE",
+    "controller": "Articles\\DeleteArticleController"
   }
 ]
