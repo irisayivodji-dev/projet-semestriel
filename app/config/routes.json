@@ -75,6 +75,16 @@
     "controller": "Articles\\GetArticleController"
   },
   {
+    "path": "/articles/:id/categories",
+    "method": "GET",
+    "controller": "Articles\\GetArticleCategoriesController"
+  },
+  {
+    "path": "/articles/:id/tags",
+    "method": "GET",
+    "controller": "Articles\\GetArticleTagsController"
+  },
+  {
     "path": "/articles",
     "method": "POST",
     "controller": "Articles\\CreateArticleController"
@@ -128,5 +138,35 @@
     "path": "/categories/:id/articles",
     "method": "GET",
     "controller": "Categories\\GetCategoryArticlesController"
+  },
+  {
+    "path": "/tags",
+    "method": "GET",
+    "controller": "Tags\\GetTagsController"
+  },
+  {
+    "path": "/tags/:id",
+    "method": "GET",
+    "controller": "Tags\\GetTagController"
+  },
+  {
+    "path": "/tags",
+    "method": "POST",
+    "controller": "Tags\\PostTagController"
+  },
+  {
+    "path": "/tags/:id",
+    "method": "PATCH",
+    "controller": "Tags\\PatchTagController"
+  },
+  {
+    "path": "/tags/:id",
+    "method": "DELETE",
+    "controller": "Tags\\DeleteTagController"
+  },
+  {
+    "path": "/tags/:id/articles",
+    "method": "GET",
+    "controller": "Tags\\GetTagArticlesController"
   }
 ]

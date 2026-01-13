@@ -45,5 +45,15 @@ class ArticleRepository extends AbstractRepository {
         $stmt->execute(['article_id' => $articleId]);
         return $stmt->fetchAll(\PDO::FETCH_CLASS, \App\Entities\Category::class);
     }
+
+    //les tags associées à un article
+
+    public function getTags(int $articleId): array
+    {
+        $sql = "SELECT t.* FROM tags t INNER JOIN article_tag at ON t.id = at.tag_id WHERE at.article_id = :article_id";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->execute(['article_id' => $articleId]);
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, \App\Entities\Tag::class);
+    }
 }
 ?>
