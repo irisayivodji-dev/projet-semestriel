@@ -75,6 +75,16 @@
     "controller": "Articles\\GetArticleController"
   },
   {
+    "path": "/articles/:id/categories",
+    "method": "GET",
+    "controller": "Articles\\GetArticleCategoriesController"
+  },
+  {
+    "path": "/articles/:id/tags",
+    "method": "GET",
+    "controller": "Articles\\GetArticleTagsController"
+  },
+  {
     "path": "/articles",
     "method": "POST",
     "controller": "Articles\\CreateArticleController"
