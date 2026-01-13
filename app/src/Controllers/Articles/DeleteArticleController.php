@@ -15,12 +15,19 @@ class DeleteArticleController extends AbstractController {
         $article = $articleRepository->find($request->getSlug('id'));
         
         if(empty($article)) {
-            return new Response(json_encode(['error' => 'not found']), 404, ['Content-Type' => 'application/json']);
+            return new Response(json_encode([
+                'success' => false,
+                'error' => 'Article non trouvé'
+            ]), 404, ['Content-Type' => 'application/json']);
         }
         
         $articleRepository->remove($article);
         
-        return new Response('', 204, ['Content-Type' => 'application/json']);
+        return new Response(json_encode([
+            'success' => true,
+            'message' => 'Article supprimé',
+            'article_id' => $article->id
+        ]), 200, ['Content-Type' => 'application/json']);
     }
 }
 

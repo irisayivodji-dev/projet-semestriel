@@ -110,6 +110,16 @@
     "controller": "Articles\\DeleteArticleController"
   },
   {
+    "path": "/articles/:id/versions",
+    "method": "GET",
+    "controller": "Articles\\GetArticleVersionsController"
+  },
+  {
+    "path": "/articles/:id/versions/:versionId",
+    "method": "GET",
+    "controller": "Articles\\GetArticleVersionController"
+  },
+  {
     "path": "/categories",
     "method": "GET",
     "controller": "Categories\\GetCategoriesController"

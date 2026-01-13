@@ -147,3 +147,42 @@ Types :
 
 ### Validation
 Toute issue doit être testée et validée par au moins un autre membre de l'équipe avant d'être marquée comme terminée.
+
+
+# CMS Blog Multi-Auteurs
+
+**Projet semestriel – Bloc 2 RNCP39235**
+
+## Description
+CMS éditorial multi-auteurs développé en **PHP orienté objet**, utilisant un framework personnalisé créé spécialement pour ce projet.  
+
+Ce projet permet la gestion complète des articles, utilisateurs et rôles via une API REST.
+
+---
+
+## Technologies utilisées
+- **PHP 8.4** avec Apache  
+- **PostgreSQL 16**  
+- **Docker & Docker Compose**  
+- **Composer** pour l’autoload  
+- **Git / GitHub** pour le versioning  
+
+---
+
+## Organisation du projet
+- Méthodologie **SCRUM**  
+- Sprints de 2 semaines  
+- Gestion des tâches et suivi via **issues GitHub**  
+
+---
+
+## Installation
+
+### Prérequis
+- Docker Desktop  
+- Git  
+
+### Cloner le projet
+```bash
+git clone https://github.com/yascodev/projet-semestriel.git
+cd projet-semestriel
