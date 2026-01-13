@@ -13,15 +13,7 @@ class PatchArticleController extends AbstractController {
         $payload = $request->getPayload();
         $contentType = $request->getHeaders()['Content-Type'] ?? null;
         $data = json_decode($payload, true);
-
-        if ($data === null) {
-            return new Response(json_encode([
-                'error' => 'Invalid or missing JSON payload',
-                'payload' => $payload,
-                'content_type' => $contentType
-            ]), 400, ['Content-Type' => 'application/json']);
-        }
-
+        
         $articleRepository = new ArticleRepository();
         $article = $articleRepository->find($request->getSlug('id'));
         if(empty($article)) {

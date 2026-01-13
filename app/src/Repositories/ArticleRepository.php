@@ -35,5 +35,15 @@ class ArticleRepository extends AbstractRepository {
     {
         return $this->findBy(['status' => $status]);
     }
+
+    //les catégories associées à un article
+
+    public function getCategories(int $articleId): array
+    {
+        $sql = "SELECT c.* FROM category c INNER JOIN article_category ac ON c.id = ac.category_id WHERE ac.article_id = :article_id";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->execute(['article_id' => $articleId]);
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, \App\Entities\Category::class);
+    }
 }
 ?>

@@ -98,5 +98,35 @@
     "path": "/articles/:id",
     "method": "DELETE",
     "controller": "Articles\\DeleteArticleController"
+  },
+  {
+    "path": "/categories",
+    "method": "GET",
+    "controller": "Categories\\GetCategoriesController"
+  },
+  {
+    "path": "/categories/:id",
+    "method": "GET",
+    "controller": "Categories\\GetCategoryController"
+  },
+  {
+    "path": "/categories",
+    "method": "POST",
+    "controller": "Categories\\PostCategoryController"
+  },
+  {
+    "path": "/categories/:id",
+    "method": "PATCH",
+    "controller": "Categories\\PatchCategoryController"
+  },
+  {
+    "path": "/categories/:id",
+    "method": "DELETE",
+    "controller": "Categories\\DeleteCategoryController"
+  },
+  {
+    "path": "/categories/:id/articles",
+    "method": "GET",
+    "controller": "Categories\\GetCategoryArticlesController"
   }
 ]
