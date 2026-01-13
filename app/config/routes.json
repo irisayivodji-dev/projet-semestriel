@@ -168,5 +168,10 @@
     "path": "/tags/:id/articles",
     "method": "GET",
     "controller": "Tags\\GetTagArticlesController"
+  },
+  {
+    "path": "/login",
+    "method": "GET",
+    "controller": "Auth\\LoginPageController"
   }
 ]
