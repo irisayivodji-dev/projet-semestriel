@@ -42,6 +42,26 @@ class Article extends AbstractEntity {
     #[Column(type: 'varchar', size: 255)]
     public ?string $published_at = null;
     
+   // Category
+    public array $categories = [];
+
+    public function addCategory(Category $category): void
+    {
+        $this->categories[] = $category;
+    }
+
+    public function removeCategory(Category $category): void
+    {
+        $this->categories = array_filter(
+            $this->categories,
+            fn($c) => $c->id !== $category->id
+        );
+    }
+
+    public function getCategories(): array
+    {
+        return $this->categories;
+    }
     public function generateSlug(): void
     {
         $slug = strtolower($this->title);
