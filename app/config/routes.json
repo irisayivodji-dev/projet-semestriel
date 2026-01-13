@@ -85,6 +85,16 @@
     "controller": "Articles\\PatchArticleController"
   },
   {
+    "path": "/articles/:id/publish",
+    "method": "PATCH",
+    "controller": "Articles\\PublishArticleController"
+  },
+  {
+    "path": "/articles/:id/archive",
+    "method": "PATCH",
+    "controller": "Articles\\ArchiveArticleController"
+  },
+  {
     "path": "/articles/:id",
     "method": "DELETE",
     "controller": "Articles\\DeleteArticleController"

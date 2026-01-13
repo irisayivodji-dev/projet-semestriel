@@ -2,11 +2,11 @@
 
 namespace App\Entities;
 
-use App\Lib\Database\Annotations\ORM;
-use App\Lib\Database\Annotations\Column;
-use App\Lib\Database\Annotations\Id;
-use App\Lib\Database\Annotations\AutoIncrement;
-use App\Lib\Database\AbstractEntity;
+use App\Lib\Annotations\ORM\ORM;
+use App\Lib\Annotations\ORM\Column;
+use App\Lib\Annotations\ORM\Id;
+use App\Lib\Annotations\ORM\AutoIncrement;
+use App\Lib\Entities\AbstractEntity;
 
 #[ORM]
 class Article extends AbstractEntity {
@@ -48,5 +48,10 @@ class Article extends AbstractEntity {
         $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
         $slug = trim($slug, '-');
         $this->slug = $slug;
+    }
+    
+    public function getId(): int
+    {
+        return $this->id;
     }
 }
