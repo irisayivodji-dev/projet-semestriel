@@ -1,0 +1,16 @@
+# Ignorer les fichiers/dossiers système, logs, bases de données, et build
+log/
+mysql/
+postgres/
+dist/
+*.pid
+*.sock
+*.log
+.env
+# Node/npm
+node_modules/
+# Composer
+vendor/
+# Mac/Windows
+.DS_Store
+Thumbs.db
