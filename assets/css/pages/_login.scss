@@ -1,12 +1,13 @@
 @use '../partials/variables';
 @use '../partials/mixins';
 @use "../partials/functions" as f;
+@use "sass:map";
 
 .login {
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background: #f8fafc;
-  color: #1e293b;
+  background: map.get(variables.$agnostic, 'background');
+  color: map.get(variables.$agnostic, 'text-primary');
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +25,7 @@
 
   &__left {
     flex: 1;
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    background: linear-gradient(135deg, map.get(variables.$agnostic, 'primary') 0%, map.get(variables.$agnostic, 'primary-hover') 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,7 +49,7 @@
     position: relative;
     z-index: 1;
     text-align: center;
-    color: white;
+    color: map.get(variables.$colors, 'white');
   }
 
   &__logo {
@@ -66,7 +67,7 @@
     svg {
       width: f.rem(40);
       height: f.rem(40);
-      color: white;
+      color: map.get(variables.$colors, 'white');
     }
   }
 
@@ -90,7 +91,7 @@
     align-items: center;
     justify-content: center;
     padding: f.rem(60);
-    background: #ffffff;
+    background: map.get(variables.$agnostic, 'background-white');
   }
 
   &__card {
@@ -107,13 +108,13 @@
     font-size: f.rem(32);
     font-weight: 700;
     margin: 0 0 f.rem(8) 0;
-    color: #0f172a;
+    color: map.get(variables.$agnostic, 'text-dark');
     letter-spacing: -0.5px;
   }
 
   &__subtitle {
     font-size: f.rem(16);
-    color: #64748b;
+    color: map.get(variables.$agnostic, 'text-secondary');
     margin: 0;
     font-weight: 400;
   }
@@ -123,10 +124,10 @@
     align-items: center;
     gap: f.rem(12);
     padding: f.rem(14) f.rem(16);
-    background: #fef2f2;
-    border: 1px solid #fecaca;
+    background: map.get(variables.$agnostic, 'error-bg');
+    border: 1px solid map.get(variables.$agnostic, 'error-border');
     border-radius: f.rem(10);
-    color: #dc2626;
+    color: map.get(variables.$agnostic, 'danger-dark');
     margin-bottom: f.rem(24);
     font-size: f.rem(14);
     animation: shake 0.4s ease-in-out;
@@ -153,7 +154,7 @@
   &__label {
     font-size: f.rem(14);
     font-weight: 600;
-    color: #334155;
+    color: map.get(variables.$colors, 'slate-700');
     letter-spacing: 0.2px;
   }
 
@@ -164,34 +165,34 @@
   &__input {
     width: 100%;
     padding: f.rem(14) f.rem(16);
-    border: 2px solid #e2e8f0;
+    border: 2px solid map.get(variables.$agnostic, 'border');
     border-radius: f.rem(10);
     font-size: f.rem(15);
-    background: #ffffff;
+    background: map.get(variables.$agnostic, 'background-white');
     transition: all 0.2s ease;
     box-sizing: border-box;
     font-family: inherit;
-    color: #1e293b;
+    color: map.get(variables.$agnostic, 'text-primary');
 
     &:focus {
       outline: none;
-      border-color: #6366f1;
+      border-color: map.get(variables.$agnostic, 'primary');
       box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
     }
 
     &::placeholder {
-      color: #94a3b8;
+      color: map.get(variables.$agnostic, 'placeholder');
     }
 
     &:hover:not(:focus) {
-      border-color: #cbd5e1;
+      border-color: map.get(variables.$agnostic, 'border-hover');
     }
 
     &.error {
-      border-color: #ef4444;
+      border-color: map.get(variables.$agnostic, 'danger');
       
       &:focus {
-        border-color: #ef4444;
+        border-color: map.get(variables.$agnostic, 'danger');
         box-shadow: 0 0 0 f.rem(3) rgba(239, 68, 68, 0.1);
       }
     }
@@ -199,7 +200,7 @@
 
   &__error {
     display: none;
-    color: #dc2626;
+    color: map.get(variables.$agnostic, 'danger-dark');
     font-size: f.rem(13);
     margin-top: f.rem(6);
     animation: fadeIn 0.2s ease-in-out;
@@ -212,8 +213,8 @@
   &__button {
     margin-top: f.rem(8);
     padding: f.rem(14) f.rem(24);
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    color: white;
+    background: linear-gradient(135deg, map.get(variables.$agnostic, 'primary') 0%, map.get(variables.$agnostic, 'primary-hover') 100%);
+    color: map.get(variables.$colors, 'white');
     border: none;
     border-radius: f.rem(10);
     font-size: f.rem(16);

@@ -193,5 +193,30 @@
     "path": "/admin",
     "method": "GET",
     "controller": "Admin\\AdminController"
+  },
+  {
+    "path": "/403",
+    "method": "GET",
+    "controller": "Errors\\ForbiddenController"
+  },
+  {
+    "path": "/admin/categories",
+    "method": "GET",
+    "controller": "Admin\\CategoriesController"
+  },
+  {
+    "path": "/admin/tags",
+    "method": "GET",
+    "controller": "Admin\\TagsController"
+  },
+  {
+    "path": "/admin/users",
+    "method": "GET",
+    "controller": "Admin\\UsersController"
+  },
+  {
+    "path": "/admin/articles",
+    "method": "GET",
+    "controller": "Admin\\ArticlesController"
   }
 ]

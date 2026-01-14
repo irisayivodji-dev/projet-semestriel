@@ -12,6 +12,9 @@ class AdminController extends AbstractController
 {
     public function process(Request $request): Response
     {
+        $this->request = $request;
+        
+        // tous les utilisateurs authentifiés peuvent accéder au dashboard
         if (!Session::isAuthenticated()) {
             return Response::redirect('/login');
         }
