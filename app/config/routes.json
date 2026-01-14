@@ -183,5 +183,10 @@
     "path": "/login",
     "method": "GET",
     "controller": "Auth\\LoginPageController"
+  },
+  {
+    "path": "/admin",
+    "method": "GET",
+    "controller": "Admin\\AdminController"
   }
 ]

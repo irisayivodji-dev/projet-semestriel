@@ -8,3 +8,6 @@
 @use "css/components/banner" as banner;
 @use "css/components/spinner" as spinner;
 @use "css/components/menu" as menu;
+
+@use "css/pages/login" as login;
+@use "css/pages/dashboard" as dashboard;

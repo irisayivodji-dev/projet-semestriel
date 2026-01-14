@@ -1,0 +1,63 @@
+@use '../partials/variables';
+@use '../partials/mixins';
+@use "../partials/functions" as f;
+
+.dashboard {
+  min-height: 100vh;
+  background: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #1e293b;
+
+  &__container {
+    max-width: f.rem(1200);
+    margin: 0 auto;
+    padding: f.rem(40);
+  }
+
+  &__header {
+    margin-bottom: f.rem(32);
+  }
+
+  &__title {
+    font-size: f.rem(32);
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 f.rem(8) 0;
+    letter-spacing: -0.5px;
+  }
+
+  &__subtitle {
+    font-size: f.rem(16);
+    color: #64748b;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  &__logout {
+    margin-top: f.rem(24);
+  }
+
+  &__button {
+    display: inline-block;
+    padding: f.rem(12) f.rem(24);
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border: none;
+    border-radius: f.rem(8);
+    font-size: f.rem(14);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    font-family: inherit;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}

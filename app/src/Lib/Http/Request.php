@@ -61,4 +61,14 @@ class Request {
     public function getPayload(): string {
         return $this->payload;
     }
+
+    public function getPost(): array
+    {
+        return $_POST;
+    }
+
+    public function post(string $key, mixed $default = null): mixed
+    {
+        return $_POST[$key] ?? $default;
+    }
 }

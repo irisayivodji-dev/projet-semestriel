@@ -4,6 +4,7 @@ namespace App\Lib\Auth;
 
 use App\Repositories\UserRepository;
 use App\Entities\User;
+use App\Lib\Auth\Session;
 
 class AuthService
 {
