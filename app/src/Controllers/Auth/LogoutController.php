@@ -6,17 +6,37 @@ use App\Lib\Http\Request;
 use App\Lib\Http\Response;
 use App\Lib\Controllers\AbstractController;
 use App\Lib\Auth\AuthService;
+use App\Lib\Auth\CsrfToken;
 
 class LogoutController extends AbstractController {
     public function process(Request $request): Response
     {
+        $headers = $request->getHeaders();
+        $contentType = $headers['Content-Type'] ?? $headers['content-type'] ?? '';
+        
+        // Vérifier si c'est une requête JSON (API)
+        if (strpos($contentType, 'application/json') !== false) {
+            $authService = new AuthService();
+            $authService->logout();
+
+            return new Response(
+                json_encode(['message' => 'Logout successful']),
+                200,
+                ['Content-Type' => 'application/json']
+            );
+        }
+        
+        // Requête POST (formulaire HTML)
+        $csrfToken = $request->post('csrf_token');
+        
+        // Validation CSRF
+        if (!CsrfToken::validate($csrfToken ?? '')) {
+            return Response::redirect('/admin');
+        }
+
         $authService = new AuthService();
         $authService->logout();
 
-        return new Response(
-            json_encode(['message' => 'Logout successful']),
-            200,
-            ['Content-Type' => 'application/json']
-        );
+        return Response::redirect('/login');
     }
 }

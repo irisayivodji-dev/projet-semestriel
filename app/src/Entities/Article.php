@@ -42,8 +42,8 @@ class Article extends AbstractEntity {
     #[Column(type: 'varchar', size: 255)]
     public ?string $published_at = null;
     
-   // Category
-    public array $categories = [];
+    // Category
+    protected array $categories = [];
 
     public function addCategory(Category $category): void
     {
@@ -62,6 +62,27 @@ class Article extends AbstractEntity {
     {
         return $this->categories;
     }
+    
+    protected array $tags = [];
+
+    public function addTag(Tag $tag): void
+    {
+        $this->tags[] = $tag;
+    }
+
+    public function removeTag(Tag $tag): void
+    {
+        $this->tags = array_filter(
+            $this->tags,
+            fn($t) => $t->id !== $tag->id
+        );
+    }
+
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
     public function generateSlug(): void
     {
         $slug = strtolower($this->title);

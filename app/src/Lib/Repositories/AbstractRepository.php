@@ -5,6 +5,9 @@ namespace App\Lib\Repositories;
 use App\Lib\Database\DatabaseConnexion;
 use App\Lib\Database\Dsn;
 use App\Lib\Entities\AbstractEntity;
+use App\Lib\Annotations\ORM\Id;
+use ReflectionClass;
+use ReflectionProperty;
 
 abstract class AbstractRepository
 {
@@ -62,6 +65,7 @@ abstract class AbstractRepository
 
     public function queryBuilder(): self {
         $this->queryString = "";
+        $this->params = [];
         return $this;
     }
 
@@ -121,7 +125,13 @@ abstract class AbstractRepository
     }
 
     public function where(string $field, string $condition, ?string $table = null): self {
-        $this->queryString .= " WHERE ";
+        // Vérifier si WHERE existe déjà
+        if(strpos($this->queryString, 'WHERE') === false) {
+            $this->queryString .= " WHERE ";
+        } else {
+            $this->queryString .= " AND ";
+        }
+        
         if($table !== null) {
             $this->queryString .= "$table.";
         }else {
@@ -209,15 +219,44 @@ abstract class AbstractRepository
     }
 
     public function set(AbstractEntity $entity): self {
-
         $this->queryString .= " SET";
-        foreach ($entity->toArray() as $key => $value) {
-            $this->queryString .= " $key = :$key,";
+        
+        $reflection = new ReflectionClass($entity);
+        $array = $entity->toArray();
+        
+        foreach ($array as $key => $value) {
+            // Exclure les propriétés avec l'annotation #[Id] de la clause SET
+            $property = $reflection->getProperty($key);
+            $idAttributes = $property->getAttributes(Id::class);
+            
+            if (empty($idAttributes)) {
+                $this->queryString .= " $key = :$key,";
+            }
         }
 
         $this->queryString = rtrim($this->queryString, ',');
 
         return $this;
+    }
+    
+    /**
+     * Retourne un tableau de paramètres pour la mise à jour, en excluant l'ID de la clause SET
+     * mais en le gardant pour la clause WHERE
+     */
+    protected function getUpdateParams(AbstractEntity $entity): array {
+        $reflection = new ReflectionClass($entity);
+        $array = $entity->toArray();
+        $params = [];
+        
+        foreach ($array as $key => $value) {
+            $property = $reflection->getProperty($key);
+            $idAttributes = $property->getAttributes(Id::class);
+            
+            // Inclure tous les paramètres (l'ID sera utilisé dans le WHERE)
+            $params[$key] = $value;
+        }
+        
+        return $params;
     }
 
     public function save(AbstractEntity $entity): string {
@@ -232,14 +271,39 @@ abstract class AbstractRepository
     }
 
     public function update(AbstractEntity $entity) {
+        $reflection = new ReflectionClass($entity);
+        $array = $entity->toArray();
+        
+        // Construire les paramètres SET (sans l'ID) en suivant la même logique que set()
+        $setParams = [];
+        $idValue = null;
+        
+        foreach ($array as $key => $value) {
+            $property = $reflection->getProperty($key);
+            $idAttributes = $property->getAttributes(Id::class);
+            
+            if (empty($idAttributes)) {
+                // Inclure dans les paramètres SET
+                $setParams[$key] = $value;
+            } else {
+                // Garder l'ID séparément pour le WHERE
+                $idValue = $value;
+            }
+        }
+        
+        // Si l'ID n'a pas été trouvé dans toArray(), utiliser getId()
+        if ($idValue === null) {
+            $idValue = $entity->getId();
+        }
+        
         $this->queryBuilder()
             ->updateTable()
             ->as(substr($this->getTable(), 0, 1))
             ->set($entity)
             ->where('id', self::CONDITIONS['eq'])
-            ->setParams($entity->toArray())
+            ->setParams($setParams)
+            ->addParam('id', $idValue)
             ->executeQuery();
-        $this->executeQuery();
     }
 
     public function remove(AbstractEntity $entity) {

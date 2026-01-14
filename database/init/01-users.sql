@@ -1,4 +1,4 @@
--- PostgreSQL schema for users table
+
 
 -- Type pour les rôles
 CREATE TYPE user_role AS ENUM ('admin', 'editor', 'author');
@@ -33,5 +33,5 @@ CREATE TRIGGER update_users_updated_at
 
 -- Admin par défaut (password: admin123)
 INSERT INTO users (email, password, role) VALUES 
-('admin@cms.local', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin')
+('admin@cms.local', '$2y$10$K3fi0ciDncw/IMsHTQ2dpeqs7CNgsjqaAswVw1aNTa8Y8yDStFJ/C', 'admin')
 ON CONFLICT (email) DO NOTHING;

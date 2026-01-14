@@ -1,11 +1,16 @@
 <?php
 
 namespace App\Repositories;
-
+use App\Lib\Entities\AbstractEntity;
+use App\Repositories\ArticleVersionRepository;
 use App\Lib\Repositories\AbstractRepository;
 use App\Entities\Article;
 
 class ArticleRepository extends AbstractRepository {
+
+    public function getConnexion() {
+        return $this->db->getConnexion();
+    }
     
     public function getTable(): string {
         return 'articles';
@@ -36,6 +41,34 @@ class ArticleRepository extends AbstractRepository {
         return $this->findBy(['status' => $status]);
     }
 
+    /**
+     * Génère un slug unique en vérifiant s'il existe déjà dans la base de données
+     * Si le slug existe, ajoute un suffixe numérique (ex: premier-article-2)
+     */
+    public function generateUniqueSlug(string $baseSlug, ?int $excludeArticleId = null): string
+    {
+        $slug = $baseSlug;
+        $counter = 1;
+        
+        // Vérifier si le slug existe déjà (en excluant l'article actuel si on est en mode update)
+        while (true) {
+            $existingArticle = $this->findBySlug($slug);
+            if ($existingArticle === null) {
+                // Le slug est disponible
+                break;
+            }
+            // Si on est en mode update et que l'article trouvé est celui qu'on modifie, on peut utiliser ce slug
+            if ($excludeArticleId !== null && $existingArticle->id === $excludeArticleId) {
+                break;
+            }
+            // Sinon, générer un nouveau slug avec un suffixe
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+        
+        return $slug;
+    }
+
     //les catégories associées à un article
 
     public function getCategories(int $articleId): array
@@ -54,6 +87,17 @@ class ArticleRepository extends AbstractRepository {
         $stmt = $this->db->getConnexion()->prepare($sql);
         $stmt->execute(['article_id' => $articleId]);
         return $stmt->fetchAll(\PDO::FETCH_CLASS, \App\Entities\Tag::class);
+    }
+    
+    public function update(AbstractEntity $entity) {
+        // Appeler la méthode parente qui gère correctement les paramètres
+        parent::update($entity);
+        
+        // Sauvegarder la version après la mise à jour
+        if ($entity instanceof \App\Entities\Article) {
+            $versionRepo = new \App\Repositories\ArticleVersionRepository();
+            $versionRepo->saveVersionFromArticle($entity);
+        }
     }
 }
 ?>

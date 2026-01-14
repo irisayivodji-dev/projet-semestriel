@@ -15,10 +15,16 @@ class GetArticleController extends AbstractController {
         $article = $articleRepository->find($request->getSlug('id'));
         
         if(empty($article)) {
-            return new Response(json_encode(['error' => 'not found']), 404, ['Content-Type' => 'application/json']);
+            return new Response(json_encode([
+                'success' => false,
+                'error' => 'Article non trouvé'
+            ]), 404, ['Content-Type' => 'application/json']);
         }
         
-        return new Response(json_encode($article), 200, ['Content-Type' => 'application/json']);
+        return new Response(json_encode([
+            'success' => true,
+            'article' => $article
+        ]), 200, ['Content-Type' => 'application/json']);
     }
 }
 

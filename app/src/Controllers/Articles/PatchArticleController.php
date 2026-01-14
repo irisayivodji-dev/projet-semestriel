@@ -17,12 +17,17 @@ class PatchArticleController extends AbstractController {
         $articleRepository = new ArticleRepository();
         $article = $articleRepository->find($request->getSlug('id'));
         if(empty($article)) {
-            return new Response(json_encode(['error' => 'not found']), 404, ['Content-Type' => 'application/json']);
+            return new Response(json_encode([
+                'success' => false,
+                'error' => 'Article non trouvé'
+            ]), 404, ['Content-Type' => 'application/json']);
         }
 
         if(isset($data['title'])) {
             $article->title = $data['title'];
             $article->generateSlug();
+            // Générer un slug unique en excluant l'article actuel
+            $article->slug = $articleRepository->generateUniqueSlug($article->slug, $article->id);
         }
 
         if(isset($data['content'])) {
@@ -35,7 +40,11 @@ class PatchArticleController extends AbstractController {
 
         $article->updated_at = date('Y-m-d H:i:s');
         $articleRepository->update($article);
-        return new Response(json_encode($article), 200, ['Content-Type' => 'application/json']);
+        return new Response(json_encode([
+            'success' => true,
+            'message' => 'Article mise à jour',
+            'article' => $article
+        ]), 200, ['Content-Type' => 'application/json']);
     }
 }
 

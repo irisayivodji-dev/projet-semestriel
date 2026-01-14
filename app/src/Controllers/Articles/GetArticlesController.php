@@ -13,7 +13,10 @@ class GetArticlesController extends AbstractController {
         $articleRepository = new ArticleRepository();
         // Par défaut, on ne retourne que les articles publiés
         $articles = $articleRepository->findByStatus('published');
-        return new Response(json_encode($articles), 200, ['Content-Type' => 'application/json']);
+        return new Response(json_encode([
+            'success' => true,
+            'articles' => $articles
+        ]), 200, ['Content-Type' => 'application/json']);
     }
 }
 
