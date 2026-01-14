@@ -70,6 +70,11 @@
     "controller": "Articles\\GetArticlesController"
   },
   {
+    "path": "/articles/slug/:slug",
+    "method": "GET",
+    "controller": "Articles\\GetArticleBySlugController"
+  },
+  {
     "path": "/articles/:id",
     "method": "GET",
     "controller": "Articles\\GetArticleController"
