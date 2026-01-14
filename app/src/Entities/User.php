@@ -22,6 +22,12 @@ class User extends AbstractEntity {
     #[Column(type: 'varchar', size: 255)]
     public string $password;
     
+    #[Column(type: 'varchar', size: 255)]
+    public string $firstname;
+    
+    #[Column(type: 'varchar', size: 255)]
+    public string $lastname;
+    
     #[Column(type: 'varchar', size: 20)]
     public string $role;
 

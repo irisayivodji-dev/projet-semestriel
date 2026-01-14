@@ -21,7 +21,43 @@ class PatchUserController extends AbstractController {
         }
         
         if (isset($data['email'])) {
-            $user->email = $data['email'];
+            $user->email = trim($data['email']);
+        }
+        
+        if (isset($data['firstname'])) {
+            if (empty(trim($data['firstname']))) {
+                return new Response(
+                    json_encode(['error' => 'firstname cannot be empty']),
+                    400,
+                    ['Content-Type' => 'application/json']
+                );
+            }
+            if (strlen($data['firstname']) > 255) {
+                return new Response(
+                    json_encode(['error' => 'firstname must not exceed 255 characters']),
+                    400,
+                    ['Content-Type' => 'application/json']
+                );
+            }
+            $user->firstname = trim($data['firstname']);
+        }
+        
+        if (isset($data['lastname'])) {
+            if (empty(trim($data['lastname']))) {
+                return new Response(
+                    json_encode(['error' => 'lastname cannot be empty']),
+                    400,
+                    ['Content-Type' => 'application/json']
+                );
+            }
+            if (strlen($data['lastname']) > 255) {
+                return new Response(
+                    json_encode(['error' => 'lastname must not exceed 255 characters']),
+                    400,
+                    ['Content-Type' => 'application/json']
+                );
+            }
+            $user->lastname = trim($data['lastname']);
         }
         
         if (isset($data['password'])) {

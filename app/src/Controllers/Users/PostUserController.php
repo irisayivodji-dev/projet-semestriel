@@ -15,6 +15,7 @@ class PostUserController extends AbstractController {
     {
         $data = json_decode($request->getPayload(), true);
         
+        // Validation des champs obligatoires
         if (!isset($data['email']) || !isset($data['password'])) {
             return new Response(
                 json_encode(['error' => 'Email and password required']),
@@ -23,10 +24,45 @@ class PostUserController extends AbstractController {
             );
         }
         
+        if (!isset($data['firstname']) || empty(trim($data['firstname']))) {
+            return new Response(
+                json_encode(['error' => 'firstname is required']),
+                400,
+                ['Content-Type' => 'application/json']
+            );
+        }
+        
+        if (!isset($data['lastname']) || empty(trim($data['lastname']))) {
+            return new Response(
+                json_encode(['error' => 'lastname is required']),
+                400,
+                ['Content-Type' => 'application/json']
+            );
+        }
+        
+        // Validation de la longueur
+        if (strlen($data['firstname']) > 255) {
+            return new Response(
+                json_encode(['error' => 'firstname must not exceed 255 characters']),
+                400,
+                ['Content-Type' => 'application/json']
+            );
+        }
+        
+        if (strlen($data['lastname']) > 255) {
+            return new Response(
+                json_encode(['error' => 'lastname must not exceed 255 characters']),
+                400,
+                ['Content-Type' => 'application/json']
+            );
+        }
+        
         $userRepository = new UserRepository();
 
         $user = new User();
-        $user->email = $data['email'];
+        $user->email = trim($data['email']);
+        $user->firstname = trim($data['firstname']);
+        $user->lastname = trim($data['lastname']);
         $user->role = $data['role'] ?? 'author';
         $user->created_at = date('Y-m-d H:i:s');
         $user->updated_at = date('Y-m-d H:i:s');
