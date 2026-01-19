@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Auth;
+namespace App\Controllers\Api\v1\Auth;
 
 use App\Lib\Http\Request;
 use App\Lib\Http\Response;

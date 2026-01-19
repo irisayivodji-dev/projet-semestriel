@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controllers\Users;
+namespace App\Controllers\Api\v1\Users;
 
 use App\Lib\Http\Request;
 use App\Lib\Http\Response;

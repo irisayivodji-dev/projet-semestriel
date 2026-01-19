@@ -1,6 +1,6 @@
 <?php
 
-    namespace App\Controllers\Tags;
+    namespace App\Controllers\Api\v1\Tags;
 
     use App\Lib\Http\Request;
     use App\Lib\Http\Response;

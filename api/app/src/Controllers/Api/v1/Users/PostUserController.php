@@ -2,7 +2,7 @@
 
 
 
-namespace App\Controllers\Users;
+namespace App\Controllers\Api\v1\Users;
 
 use App\Entities\User;
 use App\Lib\Http\Request;

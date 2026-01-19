@@ -1,5 +1,5 @@
 <?php
-namespace App\Controllers\Articles;
+namespace App\Controllers\Api\v1\Articles;
 
 use App\Lib\Http\Request;
 use App\Lib\Http\Response;

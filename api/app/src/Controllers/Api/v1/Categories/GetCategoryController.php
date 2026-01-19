@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Categories;
+namespace App\Controllers\Api\v1\Categories;
 
 use App\Lib\Http\Request;
 use App\Lib\Http\Response;
