@@ -41,7 +41,7 @@
                         </div>
                     <?php endif; ?>
 
-                    <form method="POST" action="/login" class="login__form" id="loginForm">
+                    <form method="POST" action="/api/v1/auth/login" class="login__form" id="loginForm">
                         <input type="hidden" name="csrf_token" value="<?= isset($csrf_token) ? htmlspecialchars($csrf_token) : '' ?>">
                         <div class="login__field">
                             <label class="login__label">Email</label>

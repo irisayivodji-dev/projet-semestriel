@@ -1,0 +1,111 @@
+<?php
+use App\Lib\Auth\PermissionService;
+use App\Lib\Auth\AuthService;
+
+$authService = new AuthService();
+$currentUser = $authService->getCurrentUser();
+
+$currentUri = $_SERVER['REQUEST_URI'] ?? '/';
+$isActive = function($path) use ($currentUri) {
+    if ($path === '/admin') {
+        return $currentUri === '/admin' || $currentUri === '/admin/';
+    }
+    return strpos($currentUri, $path) !== false;
+};
+?>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+</button>
+
+<aside class="sidebar">
+    <?php if ($currentUser): ?>
+        <div class="sidebar__user">
+            <p class="sidebar__user-name"><?= htmlspecialchars($currentUser->firstname ?? $currentUser->email) ?></p>
+            <p class="sidebar__user-role"><?= htmlspecialchars($currentUser->role ?? 'user') ?></p>
+        </div>
+    <?php endif; ?>
+    
+    <nav>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="/admin" class="<?= $isActive('/admin') ? 'active' : '' ?>">
+                    Dashboard
+                </a>
+            </li>
+            
+            <?php if (PermissionService::canManageUsers()): ?>
+                <li>
+                    <a href="/admin/users" class="<?= $isActive('/admin/users') ? 'active' : '' ?>">
+                        Utilisateurs
+                    </a>
+                </li>
+            <?php endif; ?>
+            
+            <?php if (PermissionService::canManageCategories()): ?>
+                <li>
+                    <a href="/admin/categories" class="<?= $isActive('/admin/categories') ? 'active' : '' ?>">
+                        Catégories
+                    </a>
+                </li>
+            <?php endif; ?>
+            
+            <?php if (PermissionService::canManageTags()): ?>
+                <li>
+                    <a href="/admin/tags" class="<?= $isActive('/admin/tags') ? 'active' : '' ?>">
+                        Tags
+                    </a>
+                </li>
+            <?php endif; ?>
+            
+            <?php if (PermissionService::canManageAllArticles() || PermissionService::canManageOwnArticles()): ?>
+                <li>
+                    <a href="/admin/articles" class="<?= $isActive('/admin/articles') ? 'active' : '' ?>">
+                        Articles
+                    </a>
+                </li>
+            <?php endif; ?>
+            
+            <li>
+                <a href="/api/v1/auth/logout">Déconnexion</a>
+            </li>
+        </ul>
+    </nav>
+</aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('is-open');
+            overlay.classList.toggle('is-active');
+            document.body.classList.toggle('sidebar-open');
+        }
+
+        sidebarToggle?.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleSidebar();
+        });
+
+        overlay?.addEventListener('click', function() {
+            toggleSidebar();
+        });
+
+        const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    toggleSidebar();
+                }
+            });
+        });
+    });
+</script>

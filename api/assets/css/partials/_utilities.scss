@@ -1,58 +1,84 @@
-@use "sass:map";
 @use "functions" as f;
 @use "variables" as v;
 
+$positions :(
+    't': 'top',
+    'b': 'bottom',
+    'l': 'left',
+    'r': 'right'
+);
+
+$classes: (
+    'bg': 'background-color',
+    'text': 'color',
+    'border': 'border-color'
+);
+
+@layer utilities {
+    
 @for $i from 1 through 6 { 
+    $value: calc($i * var(--spacing));
     .p-#{$i} { 
-        padding : calc(#{$i} * var(--spacing)); 
+        padding : $value; 
     } 
-}
-@for $i from 1 through 6 { 
-    .pt-#{$i} { 
-        padding-top : calc(#{$i} * var(--spacing)); 
-    } 
-}
-@for $i from 1 through 6 { 
-    .pl-#{$i} { 
-        padding-left : calc(#{$i} * var(--spacing)); 
-    } 
-}
-@for $i from 1 through 6 { 
-    .pr-#{$i} { 
-        padding-right : calc(#{$i} * var(--spacing)); 
-    } 
-} 
-@for $i from 1 through 6 { 
-    .pb-#{$i} { 
-        padding-bottom : calc(#{$i} * var(--spacing)); 
-    } 
-}
-@for $i from 1 through 6 { 
     .m-#{$i} { 
-        margin : calc(#{$i} * var(--spacing)); 
-    } 
-} 
+        margin : $value; 
+    }
+}
+
 @for $i from 1 through 6 { 
-    .ml-#{$i} { 
-        margin-left : calc(#{$i} * var(--spacing)); 
-    } 
-} 
-@for $i from 1 through 6 { 
-    .mt-#{$i} { 
-        margin-top : calc(#{$i} * var(--spacing)); 
-    } 
-} 
-@for $i from 1 through 6 { 
-    .mr-#{$i} { 
-        margin-right : calc(#{$i} * var(--spacing)); 
-    } 
-} 
-@for $i from 1 through 6 { 
-    .mb-#{$i} { 
-        margin-bottom : calc(#{$i} * var(--spacing)); 
-    } 
-} 
+    @each $abbr, $position in $positions {
+        $value: calc($i * var(--spacing));
+        .p#{$abbr}-#{$i} { 
+            padding-#{$position} : $value; 
+        } 
+        .m#{$abbr}-#{$i} { 
+            margin-#{$position} : $value; 
+        }
+    }
+}
+
+@each $name, $value in v.$colors {
+    .bg--#{$name} {
+        background-color: var(--#{$name});
+    }
+    .text--#{$name} {
+        color: var(--#{$name});
+    }
+    .border--#{$name} {
+        border-color: var(--#{$name});
+    }
+    
+    // Génération automatique des variantes (ex: bg--indigo-500, text--slate-800)
+    @each $suffix, $percent in v.$shades {
+        .bg--#{$name}-#{$suffix} {
+            background-color: var(--#{$name}-#{$suffix});
+        }
+        .text--#{$name}-#{$suffix} {
+            color: var(--#{$name}-#{$suffix});
+        }
+        .border--#{$name}-#{$suffix} {
+            border-color: var(--#{$name}-#{$suffix});
+        }
+    }
+}
+@each $class-abbr, $property in $classes {
+    @each $name, $color in v.$colors {
+        .#{$class-abbr}-#{$name} {
+            #{$property}: var(--#{$name});
+        }
+        
+        // Génération automatique des variantes (ex: bg-indigo-500, text-slate-800)
+        @each $suffix, $percent in v.$shades {
+            .#{$class-abbr}-#{$name}-#{$suffix} {
+                #{$property}: var(--#{$name}-#{$suffix});
+            }
+        }
+    }
+
+}
 
 
 
 
+}
