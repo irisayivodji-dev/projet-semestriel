@@ -19,4 +19,13 @@ abstract class AbstractController {
 
         return $response;
     }
+
+    protected function renderError(int $code): Response {
+    $filePath = __DIR__ . "/../../../views/errors/{$code}.html";
+    $content = file_exists($filePath) 
+        ? file_get_contents($filePath) 
+        : "Erreur {$code}";
+        
+    return new Response($content, $code, ['Content-Type' => 'text/html']);
+    }
 }
