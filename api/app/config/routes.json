@@ -190,6 +190,36 @@
     "controller": "Admin\\UsersController"
   },
   {
+    "path": "/admin/users/create",
+    "method": "GET",
+    "controller": "Admin\\CreateUserController"
+  },
+  {
+    "path": "/admin/users/create",
+    "method": "POST",
+    "controller": "Admin\\CreateUserController"
+  },
+  {
+    "path": "/admin/users/edit/:id",
+    "method": "GET",
+    "controller": "Admin\\EditUserController"
+  },
+  {
+    "path": "/admin/users/edit/:id",
+    "method": "PATCH",
+    "controller": "Admin\\EditUserController"
+  },
+  {
+    "path": "/admin/users/delete/:id",
+    "method": "GET",
+    "controller": "Admin\\DeleteUserController"
+  },
+  {
+    "path": "/admin/users/delete/:id",
+    "method": "POST",
+    "controller": "Admin\\DeleteUserController"
+  },
+  {
     "path": "/admin/articles",
     "method": "GET",
     "controller": "Admin\\ArticlesController"

@@ -17,7 +17,7 @@
         <div class="dashboard__logout">
             <form method="POST" action="/api/v1/auth/logout">
                 <input type="hidden" name="csrf_token" value="<?= isset($csrf_token) ? htmlspecialchars($csrf_token) : '' ?>">
-                <button type="submit" class="dashboard__button">
+                <button type="submit" class="button button--danger">
                     Se déconnecter
                 </button>
             </form>
