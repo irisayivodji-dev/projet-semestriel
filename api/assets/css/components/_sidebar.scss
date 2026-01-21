@@ -1,4 +1,5 @@
 @use '../partials/functions' as f;
+@use '../partials/mixins' as m;
 
 .sidebar {
   width: f.rem(250);
@@ -59,7 +60,7 @@
     }
 
     a {
-      display: block;
+      @include m.flex-start;
       padding: f.rem(12) f.rem(16);
       color: rgba(255, 255, 255, 0.9);
       text-decoration: none;
@@ -102,6 +103,9 @@
 
   // Style spécial pour le lien de déconnexion
   &-menu li:last-child a {
+    display:flex;
+    align-items: center;
+    justify-content:space-between;
     background: rgba(255, 255, 255, 0.1);
     color: var(--white);
     font-weight: 600;
@@ -134,9 +138,9 @@
 .sidebar-toggle {
   display: none;
   position: fixed;
-  top: f.rem(16);
-  left: f.rem(16);
-  z-index: 999;
+  top: f.rem(20);
+  right: f.rem(20);
+  z-index: 1;
   padding: f.rem(8);
   background: transparent;
   border: none;
@@ -157,6 +161,10 @@
 
 // Responsive
 @media (max-width: 768px) {
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
   .sidebar {
     position: fixed;
     left: 0;
@@ -167,6 +175,8 @@
     height: 100vh;
     width: f.rem(250);
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 
     &.is-open {
       transform: translateX(0);

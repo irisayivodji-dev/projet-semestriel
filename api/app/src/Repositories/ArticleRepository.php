@@ -41,10 +41,9 @@ class ArticleRepository extends AbstractRepository {
         return $this->findBy(['status' => $status]);
     }
 
-    /**
-     * Génère un slug unique en vérifiant s'il existe déjà dans la base de données
-     * Si le slug existe, ajoute un suffixe numérique (ex: premier-article-2)
-     */
+    //Génère un slug unique en vérifiant s'il existe déjà dans la base de données
+    //Si le slug existe, ajoute un suffixe numérique (ex: premier-article-2)
+
     public function generateUniqueSlug(string $baseSlug, ?int $excludeArticleId = null): string
     {
         $slug = $baseSlug;
@@ -89,11 +88,21 @@ class ArticleRepository extends AbstractRepository {
         return $stmt->fetchAll(\PDO::FETCH_CLASS, \App\Entities\Tag::class);
     }
     
+    //Compte le nombre d'articles créés par un auteur
+    public function countByAuthor(int $authorId): int
+    {
+        $sql = "SELECT COUNT(*) as count FROM {$this->getTable()} WHERE author_id = :author_id";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->execute(['author_id' => $authorId]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return (int) $result['count'];
+    }
+    
     public function update(AbstractEntity $entity) {
-        // Appeler la méthode parente qui gère correctement les paramètres
+        // Appele la méthode parente qui gère correctement les paramètres
         parent::update($entity);
         
-        // Sauvegarder la version après la mise à jour
+        // Sauvegarde la version après la mise à jour
         if ($entity instanceof \App\Entities\Article) {
             $versionRepo = new \App\Repositories\ArticleVersionRepository();
             $versionRepo->saveVersionFromArticle($entity);

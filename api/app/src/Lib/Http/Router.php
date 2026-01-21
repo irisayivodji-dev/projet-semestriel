@@ -35,7 +35,17 @@ class Router {
 
 
     private static function checkMethod(Request $request, array $route): bool {
-        return $request->getMethod() === $route['method'];
+        $requestMethod = $request->getMethod();
+        
+        // Support pour les méthodes HTTP simulées via _method dans les formulaires POST
+        if ($requestMethod === 'POST') {
+            $postData = $request->getPost();
+            if (isset($postData['_method'])) {
+                $requestMethod = strtoupper($postData['_method']);
+            }
+        }
+        
+        return $requestMethod === $route['method'];
     }
 
     private static function checkUri(Request $request, array $route): bool {

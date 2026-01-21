@@ -2,44 +2,82 @@
 @use "sass:color";
 @use "../partials/variables" as v;
 @use "../partials/functions" as f;
+@use "../partials/mixins" as m;
+
 @layer components {
 .button {
-    font-size: 1rem;
+    font-size: f.rem(14);
     font-weight: 600;
-    border-radius: f.rem(6);
-    line-height: f.rem(18);
+    border-radius: f.rem(8);
+    line-height: 1.5;
     text-decoration: none;
-    display: inline-block;
-    padding: f.rem(10) f.rem(16);
-    background-color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: f.rem(6);
+    padding: f.rem(12) f.rem(24);
+    border: none;
     cursor: pointer;
-    color: var(--black);
-    transition: background-color 0.3s; 
-    &:hover {
-        background-color: color.adjust(map-get(v.$colors, 'white'), $lightness: -10%);
+    transition: all 0.2s ease;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    // Variante Indigo (bouton principal)
+    &--indigo {
+        background: linear-gradient(135deg, var(--indigo-400) 0%, var(--indigo-500) 100%);
+        color: var(--white);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
     }
 
-    // Modificateurs de couleur
-    @each $name, $color in v.$agnostic {
-        &--#{$name} {
-            background-color: $color;
-            color: map.get(v.$colors, 'white');
-            
-            &:hover {
-                background-color: color.adjust($color, $lightness: -10%);
-            }
+    // Variante Secondary (bouton secondaire/annuler)
+    &--secondary {
+        background: var(--gray-200);
+        color: var(--gray-700);
+        box-shadow: none;
+
+        &:hover {
+            background: var(--gray-300);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    // Variante Danger (bouton danger/suppression)
+    &--danger {
+        background: linear-gradient(135deg, var(--red-500) 0%, var(--red-600) 100%);
+        color: var(--white);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        &:active {
+            transform: translateY(0);
         }
     }
 
     // Modificateurs de taille
     &--lg {
         padding: f.rem(16) f.rem(32);
-        font-size: f.rem(20);
+        font-size: f.rem(18);
     }
 
     &--sm {
-        padding: f.rem(6) f.rem(12);
-        font-size: f.rem(14);
+        padding: f.rem(8) f.rem(16);
+        font-size: f.rem(12);
     }
 }
 }
