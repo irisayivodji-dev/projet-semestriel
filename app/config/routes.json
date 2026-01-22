@@ -173,5 +173,25 @@
     "path": "/login",
     "method": "GET",
     "controller": "Auth\\LoginPageController"
+  },
+  {
+    "path": "/admin/articles",
+    "method": "GET",
+    "controller": "Articles\\GetArticlesAdminController"
+  },
+  {
+    "path": "/admin/articles/:id/publish",
+    "method": "PATCH",
+    "controller": "Articles\\PublishArticleAdminController"
+  },
+  {
+    "path": "/admin/articles/:id/archive",
+    "method": "PATCH",
+    "controller": "Articles\\ArchiveArticleAdminController"
+  },
+  {
+    "path": "/admin/articles/:id/delete",
+    "method": "DELETE",
+    "controller": "Articles\\DeleteArticleAdminController"
   }
 ]
