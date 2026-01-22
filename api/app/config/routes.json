@@ -31,6 +31,11 @@
   },
   {
     "path": "/api/v1/auth/logout",
+    "method": "GET",
+    "controller": "Api\\v1\\Auth\\LogoutController"
+  },
+  {
+    "path": "/api/v1/auth/logout",
     "method": "POST",
     "controller": "Api\\v1\\Auth\\LogoutController"
   },
@@ -177,51 +182,81 @@
   {
     "path": "/admin/categories",
     "method": "GET",
-    "controller": "Admin\\CategoriesController"
+    "controller": "Admin\\Categories\\CategoriesController"
+  },
+   {
+    "path": "/admin/categories/create",
+    "method": "GET",
+    "controller": "Admin\\Categories\\CreateCategoryController"
+  },
+  {
+    "path": "/admin/categories/create",
+    "method": "POST",
+    "controller": "Admin\\Categories\\CreateCategoryController"
+  },
+  {
+    "path": "/admin/categories/edit/:id",
+    "method": "GET",
+    "controller": "Admin\\Categories\\EditCategoryController"
+  },
+  {
+    "path": "/admin/categories/edit/:id",
+    "method": "PATCH",
+    "controller": "Admin\\Categories\\EditCategoryController"
+  },
+  {
+    "path": "/admin/categories/delete/:id",
+    "method": "GET",
+    "controller": "Admin\\Categories\\DeleteCategoryController"
+  },
+  {
+    "path": "/admin/categories/delete/:id",
+    "method": "POST",
+    "controller": "Admin\\Categories\\DeleteCategoryController"
   },
   {
     "path": "/admin/tags",
     "method": "GET",
-    "controller": "Admin\\TagsController"
+    "controller": "Admin\\Tags\\TagsController"
   },
   {
     "path": "/admin/users",
     "method": "GET",
-    "controller": "Admin\\UsersController"
+    "controller": "Admin\\Users\\UsersController"
   },
   {
     "path": "/admin/users/create",
     "method": "GET",
-    "controller": "Admin\\CreateUserController"
+    "controller": "Admin\\Users\\CreateUserController"
   },
   {
     "path": "/admin/users/create",
     "method": "POST",
-    "controller": "Admin\\CreateUserController"
+    "controller": "Admin\\Users\\CreateUserController"
   },
   {
     "path": "/admin/users/edit/:id",
     "method": "GET",
-    "controller": "Admin\\EditUserController"
+    "controller": "Admin\\Users\\EditUserController"
   },
   {
     "path": "/admin/users/edit/:id",
     "method": "PATCH",
-    "controller": "Admin\\EditUserController"
+    "controller": "Admin\\Users\\EditUserController"
   },
   {
     "path": "/admin/users/delete/:id",
     "method": "GET",
-    "controller": "Admin\\DeleteUserController"
+    "controller": "Admin\\Users\\DeleteUserController"
   },
   {
     "path": "/admin/users/delete/:id",
     "method": "POST",
-    "controller": "Admin\\DeleteUserController"
+    "controller": "Admin\\Users\\DeleteUserController"
   },
   {
     "path": "/admin/articles",
     "method": "GET",
-    "controller": "Admin\\ArticlesController"
+    "controller": "Admin\\Articles\\ArticlesController"
   }
 ]

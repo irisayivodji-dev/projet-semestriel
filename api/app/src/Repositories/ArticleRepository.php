@@ -97,6 +97,16 @@ class ArticleRepository extends AbstractRepository {
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         return (int) $result['count'];
     }
+
+    //Compte le nombre d'articles créés par categorie
+    public function countByCategory(int $categoryId): int
+    {
+        $sql = "SELECT COUNT(DISTINCT article_id) as count FROM article_category WHERE category_id = :category_id";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->execute(['category_id' => $categoryId]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return (int) $result['count'];
+    }
     
     public function update(AbstractEntity $entity) {
         // Appele la méthode parente qui gère correctement les paramètres

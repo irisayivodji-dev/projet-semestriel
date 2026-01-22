@@ -1,43 +1,42 @@
 <?php
 
-namespace App\Controllers\Admin;
+namespace App\Controllers\Admin\Categories;
 
 use App\Lib\Http\Request;
 use App\Lib\Http\Response;
 use App\Lib\Controllers\AbstractController;
 use App\Lib\Auth\CsrfToken;
-use App\Repositories\UserRepository;
+use App\Repositories\CategoryRepository;
 use App\Repositories\ArticleRepository;
 
-class UsersController extends AbstractController
+class CategoriesController extends AbstractController
 {
     public function process(Request $request): Response
     {
         $this->request = $request;
-        $this->requireCanManageUsers();
+        $this->requireCanManageCategories();
 
-        // Récupérer tous les utilisateurs
-        $userRepository = new UserRepository();
-        $users = $userRepository->findAll();
-        
-        // Récupérer le nombre d'articles par utilisateur
+        // Récupérer toutes les categories
+        $categoryRepository = new CategoryRepository();
+        $categories = $categoryRepository->findAll();
+
+        // Récupérer le nombre d'articles par categories
         $articleRepository = new ArticleRepository();
-        $usersWithStats = [];
+        $categoriesWithStats = [];
         
-        foreach ($users as $user) {
-            $articleCount = $articleRepository->countByAuthor($user->id);
-            $usersWithStats[] = [
-                'id' => $user->id,
-                'firstname' => $user->firstname,
-                'lastname' => $user->lastname,
-                'email' => $user->email,
-                'role' => $user->role,
-                'created_at' => $user->created_at,
+        foreach ($categories as $category) {
+            $articleCount = $articleRepository->countByCategory($category->id);
+            $categoriesWithStats[] = [
+                'id' => $category->id,
+                'name' => $category->name,
+                'description' => $category->description,
+                'slug' => $category->slug,
+                'created_at' => $category->created_at,
                 'article_count' => $articleCount
             ];
         }
 
-        // Récupérer les messages flash
+         // Récupérer les messages flash
         $flashSuccess = \App\Lib\Auth\Session::get('flash_success');
         $flashError = \App\Lib\Auth\Session::get('flash_error');
         
@@ -50,9 +49,9 @@ class UsersController extends AbstractController
         }
 
         $csrfToken = CsrfToken::generate();
-        return $this->render('admin/users', [
+        return $this->render('admin/categories', [
             'csrf_token' => $csrfToken,
-            'users' => $usersWithStats,
+            'categories' => $categoriesWithStats,
             'flash_success' => $flashSuccess,
             'flash_error' => $flashError
         ]);

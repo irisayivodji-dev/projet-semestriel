@@ -51,6 +51,21 @@
         text-align: center;
         font-size: f.rem(14);
         color: var(--gray-800);
+        vertical-align: middle;
+      }
+
+      // Colonne description avec limitation
+      td:nth-child(2) {
+        max-width: f.rem(300);
+        text-align: left;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        line-height: 1.5;
       }
     }
   }
@@ -84,9 +99,14 @@
     @include m.flex-center;
     gap: f.rem(12);
     align-items: center;
+    white-space: nowrap;
+    min-width: f.rem(200);
 
     a {
-      padding: f.rem(6) f.rem(12);
+      display: inline-flex;
+      align-items: center;
+      gap: f.rem(6);
+      padding: f.rem(8) f.rem(12);
       border-radius: f.rem(6);
       font-size: f.rem(13);
       font-weight: 500;
@@ -95,6 +115,14 @@
       cursor: pointer;
       border: none;
       font-family: inherit;
+      white-space: nowrap;
+      flex-shrink: 0;
+
+      svg {
+        flex-shrink: 0;
+        display: inline-block;
+        vertical-align: middle;
+      }
     }
   }
 
@@ -187,7 +215,8 @@
   }
 
   &__input,
-  &__select {
+  &__select,
+  textarea.users__input {
     width: 100%;
     padding: f.rem(12) f.rem(16);
     border: 1px solid var(--gray-300);
@@ -196,6 +225,7 @@
     font-family: inherit;
     color: var(--gray-800);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    resize: vertical;
 
     &:focus {
       outline: none;
@@ -211,6 +241,11 @@
         box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
       }
     }
+  }
+
+  textarea.users__input {
+    min-height: f.rem(100);
+    line-height: 1.5;
   }
 
   &__select {
