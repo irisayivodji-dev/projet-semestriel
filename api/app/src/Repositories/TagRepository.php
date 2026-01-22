@@ -25,6 +25,11 @@ class TagRepository extends AbstractRepository {
     {
         return $this->findOneBy(['slug' => $slug]);
     }
+
+    public function findByName(string $name): ?Tag
+    {
+        return $this->findOneBy(['name' => $name]);
+    }
     
     public function create(Tag $tag): bool
     {
