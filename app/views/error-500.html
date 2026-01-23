@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>500 - Erreur serveur</title>
+    <link rel="stylesheet" href="/dist/css/main.css" />
+    <style>
+      .error-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, var(--white) 0%, #f8f9fa 100%);
+      }
+
+      .error-content {
+        text-align: center;
+        padding: 2rem;
+        max-width: 600px;
+      }
+
+      .error-code {
+        font-size: 8rem;
+        font-weight: 900;
+        color: var(--danger);
+        line-height: 1;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(220, 53, 69, 0.1);
+      }
+
+      .error-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--black);
+        margin: 1rem 0;
+        line-height: 1.2;
+      }
+
+      .error-message {
+        font-size: 1.1rem;
+        color: var(--gray);
+        margin: 1.5rem 0 2.5rem 0;
+        line-height: 1.6;
+      }
+
+      .error-illustration {
+        font-size: 6rem;
+        margin: 2rem 0;
+        opacity: 0.8;
+        animation: shake 0.5s infinite;
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-10px);
+        }
+        75% {
+          transform: translateX(10px);
+        }
+      }
+
+      .error-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+      }
+
+      .error-actions a {
+        text-decoration: none;
+      }
+
+      .error-details {
+        background-color: #f8d7da;
+        border-left: 4px solid #dc3545;
+        padding: 1rem;
+        margin: 2rem 0;
+        border-radius: 4px;
+        text-align: left;
+        font-size: 0.95rem;
+        color: #721c24;
+      }
+
+      .loading-dots {
+        display: inline-block;
+        margin-left: 5px;
+      }
+
+      .loading-dots span {
+        animation: blink 1.4s infinite;
+        margin: 0 2px;
+      }
+
+      .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes blink {
+        0%,
+        60%,
+        100% {
+          opacity: 0.3;
+        }
+        30% {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .error-code {
+          font-size: 5rem;
+        }
+
+        .error-title {
+          font-size: 1.8rem;
+        }
+
+        .error-message {
+          font-size: 1rem;
+        }
+
+        .error-illustration {
+          font-size: 4rem;
+        }
+
+        .error-actions {
+          flex-direction: column;
+        }
+
+        .error-actions .button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="error-container">
+      <div class="error-content">
+        <div class="error-illustration">⚠️</div>
+        <h1 class="error-code">500</h1>
+        <h2 class="error-title">Erreur serveur</h2>
+        <p class="error-message">
+          Une erreur inattendue s'est produite sur notre serveur. Notre équipe
+          technique a été notifiée et travaille à la résolution.
+        </p>
+        <div class="error-details">
+          <strong>Statut :</strong> En cours de traitement<span
+            class="loading-dots"
+            ><span>.</span><span>.</span><span>.</span></span
+          >
+          <br /><br />
+          <strong>Conseils :</strong> Veuillez réessayer dans quelques instants.
+          Si le problème persiste, contactez notre support technique.
+        </div>
+        <div class="error-actions">
+          <a href="/" class="button button--primary button--lg">
+            ← Retour à l'accueil
+          </a>
+          <a
+            href="javascript:location.reload()"
+            class="button button--secondary button--lg"
+          >
+            Actualiser la page
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

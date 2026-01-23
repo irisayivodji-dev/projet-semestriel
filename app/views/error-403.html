@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>403 - Accès interdit</title>
+    <link rel="stylesheet" href="/dist/css/main.css" />
+    <style>
+      .error-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, var(--white) 0%, #f8f9fa 100%);
+      }
+
+      .error-content {
+        text-align: center;
+        padding: 2rem;
+        max-width: 600px;
+      }
+
+      .error-code {
+        font-size: 8rem;
+        font-weight: 900;
+        color: var(--danger);
+        line-height: 1;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(220, 53, 69, 0.1);
+      }
+
+      .error-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--black);
+        margin: 1rem 0;
+        line-height: 1.2;
+      }
+
+      .error-message {
+        font-size: 1.1rem;
+        color: var(--gray);
+        margin: 1.5rem 0 2.5rem 0;
+        line-height: 1.6;
+      }
+
+      .error-illustration {
+        font-size: 6rem;
+        margin: 2rem 0;
+        opacity: 0.8;
+      }
+
+      .error-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+      }
+
+      .error-actions a {
+        text-decoration: none;
+      }
+
+      .error-details {
+        background-color: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 1rem;
+        margin: 2rem 0;
+        border-radius: 4px;
+        text-align: left;
+        font-size: 0.95rem;
+        color: #856404;
+      }
+
+      @media (max-width: 576px) {
+        .error-code {
+          font-size: 5rem;
+        }
+
+        .error-title {
+          font-size: 1.8rem;
+        }
+
+        .error-message {
+          font-size: 1rem;
+        }
+
+        .error-illustration {
+          font-size: 4rem;
+        }
+
+        .error-actions {
+          flex-direction: column;
+        }
+
+        .error-actions .button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="error-container">
+      <div class="error-content">
+        <div class="error-illustration">🔒</div>
+        <h1 class="error-code">403</h1>
+        <h2 class="error-title">Accès interdit</h2>
+        <p class="error-message">
+          Vous n'avez pas les permissions nécessaires pour accéder à cette
+          ressource.
+        </p>
+        <div class="error-details">
+          <strong>Raison :</strong> Vos droits d'accès ne vous autorisent pas à
+          consulter cette page. Contactez l'administrateur si vous pensez que
+          c'est une erreur.
+        </div>
+        <div class="error-actions">
+          <a href="/" class="button button--primary button--lg">
+            ← Retour à l'accueil
+          </a>
+          <a
+            href="javascript:history.back()"
+            class="button button--secondary button--lg"
+          >
+            Retour précédent
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
