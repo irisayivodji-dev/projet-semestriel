@@ -220,6 +220,36 @@
     "controller": "Admin\\Tags\\TagsController"
   },
   {
+    "path": "/admin/tags/create",
+    "method": "GET",
+    "controller": "Admin\\Tags\\CreateTagController"
+  },
+  {
+    "path": "/admin/tags/create",
+    "method": "POST",
+    "controller": "Admin\\Tags\\CreateTagController"
+  },
+  {
+    "path": "/admin/tags/edit/:id",
+    "method": "GET",
+    "controller": "Admin\\Tags\\EditTagController"
+  },
+  {
+    "path": "/admin/tags/edit/:id",
+    "method": "PATCH",
+    "controller": "Admin\\Tags\\EditTagController"
+  },
+  {
+    "path": "/admin/tags/delete/:id",
+    "method": "GET",
+    "controller": "Admin\\Tags\\DeleteTagController"
+  },
+  {
+    "path": "/admin/tags/delete/:id",
+    "method": "POST",
+    "controller": "Admin\\Tags\\DeleteTagController"
+  },
+  {
     "path": "/admin/users",
     "method": "GET",
     "controller": "Admin\\Users\\UsersController"
