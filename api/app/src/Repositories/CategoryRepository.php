@@ -25,6 +25,11 @@ class CategoryRepository extends AbstractRepository {
     {
         return $this->findOneBy(['slug' => $slug]);
     }
+
+    public function findByName(string $name): ?Category
+    {
+        return $this->findOneBy(['name' => $name]);
+    }
     
     public function create(Category $category): bool
     {

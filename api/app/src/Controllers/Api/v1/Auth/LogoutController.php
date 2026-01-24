@@ -26,7 +26,14 @@ class LogoutController extends AbstractController {
             );
         }
         
-        // Requête POST (formulaire HTML)
+        // Requête GET (lien de déconnexion)
+        if ($request->getMethod() === 'GET') {
+            $authService = new AuthService();
+            $authService->logout();
+            return Response::redirect('/login');
+        }
+        
+        // Requête POST (formulaire HTML avec CSRF)
         $csrfToken = $request->post('csrf_token');
         
         // Validation CSRF

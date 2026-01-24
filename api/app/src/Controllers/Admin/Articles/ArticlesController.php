@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Admin;
+namespace App\Controllers\Admin\Articles;
 
 use App\Lib\Http\Request;
 use App\Lib\Http\Response;
