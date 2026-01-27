@@ -288,5 +288,70 @@
     "path": "/admin/articles",
     "method": "GET",
     "controller": "Admin\\Articles\\ArticlesController"
+  },
+  {
+    "path": "/admin/articles/create",
+    "method": "GET",
+    "controller": "Admin\\Articles\\CreateArticleController"
+  },
+  {
+    "path": "/admin/articles/create",
+    "method": "POST",
+    "controller": "Admin\\Articles\\CreateArticleController"
+  },
+  {
+    "path": "/admin/articles/edit/:id",
+    "method": "GET",
+    "controller": "Admin\\Articles\\EditArticleController"
+  },
+  {
+    "path": "/admin/articles/edit/:id",
+    "method": "PATCH",
+    "controller": "Admin\\Articles\\EditArticleController"
+  },
+  {
+    "path": "/admin/articles/delete/:id",
+    "method": "GET",
+    "controller": "Admin\\Articles\\DeleteArticleController"
+  },
+  {
+    "path": "/admin/articles/delete/:id",
+    "method": "POST",
+    "controller": "Admin\\Articles\\DeleteArticleController"
+  },
+  {
+    "path": "/admin/articles/publish/:id",
+    "method": "POST",
+    "controller": "Admin\\Articles\\PublishArticleController"
+  },
+  {
+    "path": "/admin/articles/show/:id",
+    "method": "GET",
+    "controller": "Admin\\Articles\\ShowArticleController"
+  },
+  {
+    "path": "/admin/media",
+    "method": "GET",
+    "controller": "Admin\\Media\\MediaController"
+  },
+  {
+    "path": "/admin/media/upload",
+    "method": "GET",
+    "controller": "Admin\\Media\\UploadMediaController"
+  },
+  {
+    "path": "/admin/media/upload",
+    "method": "POST",
+    "controller": "Admin\\Media\\UploadMediaController"
+  },
+  {
+    "path": "/admin/media/delete/:id",
+    "method": "GET",
+    "controller": "Admin\\Media\\DeleteMediaController"
+  },
+  {
+    "path": "/admin/media/delete/:id",
+    "method": "POST",
+    "controller": "Admin\\Media\\DeleteMediaController"
   }
 ]

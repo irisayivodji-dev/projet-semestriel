@@ -53,10 +53,8 @@ class RoleMiddleware
         return null; // Accès autorisé
     }
     
-    /**
-     * Vérifie si l'utilisateur a un rôle spécifique (méthode legacy)
-     * @deprecated Utiliser requireRoles() à la place
-     */
+    //Vérifie si l'utilisateur a un rôle spécifique (méthode legacy)
+    
     public static function handle(Request $request, string $requiredRole): ?Response
     {
         return self::requireRoles($request, [$requiredRole]);
@@ -77,9 +75,8 @@ class RoleMiddleware
         return self::requireRoles($request, ['author']);
     }
     
-    /**
-     * Vérifie si l'utilisateur est admin ou editor
-     */
+    //Vérifie si l'utilisateur est admin ou editor
+     
     public static function isAdminOrEditor(Request $request): ?Response
     {
         return self::requireRoles($request, ['admin', 'editor']);

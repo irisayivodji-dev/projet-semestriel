@@ -54,7 +54,7 @@ class CreateTagController extends AbstractController
         // Créer le tag
         $tag = new Tag();
         $tag->name = trim($data['name']);
-        $tag->description = trim($data['description']);
+        $tag->description = trim($data['description'] ?? '');
         $tag->created_at = date('Y-m-d H:i:s');
         $tag->updated_at = date('Y-m-d H:i:s');
         
@@ -97,11 +97,11 @@ class CreateTagController extends AbstractController
             $errors['name'] = 'Le nom ne doit pas dépasser 255 caractères';
         }
 
-        // Description
-        if (empty(trim($data['description'] ?? ''))) {
-            $errors['description'] = 'La description est requise';
-        } elseif (strlen(trim($data['description'])) > 1000) {
-            $errors['description'] = 'La description ne doit pas dépasser 1000 caractères';
+        // Description (optionnelle)
+        if (isset($data['description']) && !empty(trim($data['description']))) {
+            if (strlen(trim($data['description'])) > 1000) {
+                $errors['description'] = 'La description ne doit pas dépasser 1000 caractères';
+            }
         }
 
         return $errors;

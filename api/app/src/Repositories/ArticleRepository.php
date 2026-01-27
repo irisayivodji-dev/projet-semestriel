@@ -108,11 +108,79 @@ class ArticleRepository extends AbstractRepository {
         return (int) $result['count'];
     }
     
+    // Sauvegarde les catégories d'un article
+    public function saveCategories(int $articleId, array $categoryIds): void
+    {
+        $conn = $this->db->getConnexion();
+        
+        // Supprimer les anciennes relations
+        $sql = "DELETE FROM article_category WHERE article_id = :article_id";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['article_id' => $articleId]);
+        
+        // Ajouter les nouvelles relations
+        if (!empty($categoryIds)) {
+            $sql = "INSERT INTO article_category (article_id, category_id) VALUES (:article_id, :category_id)";
+            $stmt = $conn->prepare($sql);
+            
+            foreach ($categoryIds as $categoryId) {
+                $categoryId = (int) $categoryId;
+                if ($categoryId > 0) {
+                    $stmt->execute([
+                        'article_id' => $articleId,
+                        'category_id' => $categoryId
+                    ]);
+                }
+            }
+        }
+    }
+    
+    // Sauvegarde les tags d'un article
+    public function saveTags(int $articleId, array $tagIds): void
+    {
+        $conn = $this->db->getConnexion();
+        
+        // Supprimer les anciennes relations
+        $sql = "DELETE FROM article_tag WHERE article_id = :article_id";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['article_id' => $articleId]);
+        
+        // Ajouter les nouvelles relations
+        if (!empty($tagIds)) {
+            $sql = "INSERT INTO article_tag (article_id, tag_id) VALUES (:article_id, :tag_id)";
+            $stmt = $conn->prepare($sql);
+            
+            foreach ($tagIds as $tagId) {
+                $tagId = (int) $tagId;
+                if ($tagId > 0) {
+                    $stmt->execute([
+                        'article_id' => $articleId,
+                        'tag_id' => $tagId
+                    ]);
+                }
+            }
+        }
+    }
+    
+    // Récupère tous les médias d'un article
+    public function getMedia(int $articleId): array
+    {
+        $mediaRepository = new MediaRepository();
+        return $mediaRepository->findByArticle($articleId);
+    }
+
+    // Récupère l'image à la une d'un article
+    public function getFeaturedMedia(int $articleId): ?\App\Entities\Media
+    {
+        $mediaRepository = new MediaRepository();
+        return $mediaRepository->findFeaturedByArticle($articleId);
+    }
+    
     public function update(AbstractEntity $entity) {
         // Appele la méthode parente qui gère correctement les paramètres
         parent::update($entity);
         
-        // Sauvegarde la version après la mise à jour
+        // Sauvegarde de l'ancienne version après la mise à jour
         if ($entity instanceof \App\Entities\Article) {
             $versionRepo = new \App\Repositories\ArticleVersionRepository();
             $versionRepo->saveVersionFromArticle($entity);

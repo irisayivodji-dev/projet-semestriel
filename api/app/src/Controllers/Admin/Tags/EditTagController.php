@@ -62,7 +62,7 @@ class EditTagController extends AbstractController
             $tag->generateSlug();
         }
         if (isset($data['description'])) {
-            $tag->description = trim($data['description']);
+            $tag->description = trim($data['description'] ?? '');
         }
         $tag->updated_at = date('Y-m-d H:i:s');
 
@@ -115,11 +115,9 @@ class EditTagController extends AbstractController
             }
         }
 
-        // Description
-        if (isset($data['description'])) {
-            if (empty(trim($data['description']))) {
-                $errors['description'] = 'La description est requise';
-            } elseif (strlen(trim($data['description'])) > 1000) {
+        // Description (optionnelle)
+        if (isset($data['description']) && !empty(trim($data['description']))) {
+            if (strlen(trim($data['description'])) > 1000) {
                 $errors['description'] = 'La description ne doit pas dépasser 1000 caractères';
             }
         }

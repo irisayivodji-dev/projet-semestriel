@@ -12,11 +12,15 @@
   &__container {
     max-width: f.rem(1200);
     margin: 0 auto;
+    margin-left: f.rem(250);
     padding: f.rem(40);
     flex: 1;
     transition: margin-left 0.3s ease;
+    width: calc(100% - f.rem(250));
 
     @media (max-width: 768px) {
+      margin-left: 0;
+      width: 100%;
       padding: f.rem(60) f.rem(20) f.rem(20) f.rem(20);
     }
   }
@@ -75,6 +79,13 @@
     color: #64748b;
     margin: 0;
     font-weight: 400;
+  }
+
+  &__content {
+    &--full {
+      width: 100%;
+      max-width: 100%;
+    }
   }
 
   &__logout {

@@ -8,6 +8,7 @@ use App\Lib\Controllers\AbstractController;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
+use App\Repositories\MediaRepository;
 use App\Entities\Article;
 
 class CreateArticleController extends AbstractController {
@@ -58,16 +59,42 @@ class CreateArticleController extends AbstractController {
             }
         }
         
+        // Validation : contenu requis si status = 'published'
+        $status = $data['status'] ?? 'draft';
+        if ($status === 'published') {
+            if (empty(trim($data['content'] ?? ''))) {
+                return new Response(
+                    json_encode(['error' => 'Le contenu est requis pour publier un article']),
+                    400,
+                    ['Content-Type' => 'application/json']
+                );
+            }
+        }
+        
+        // Validation : titre requis
+        if (empty(trim($data['title'] ?? ''))) {
+            return new Response(
+                json_encode(['error' => 'Le titre est requis']),
+                400,
+                ['Content-Type' => 'application/json']
+            );
+        }
+        
         // Créer l'article
         $articleRepository = new ArticleRepository();
         $article = new Article();
-        $article->title = $data['title'] ?? 'Sans titre';
+        $article->title = trim($data['title']);
         $article->content = $data['content'] ?? '';
         $article->excerpt = $data['excerpt'] ?? '';
         $article->author_id = $data['author_id'] ?? 1;
-        $article->status = 'draft';
+        $article->status = $status;
         $article->created_at = date('Y-m-d H:i:s');
         $article->updated_at = date('Y-m-d H:i:s');
+        
+        // Si publié, définir published_at
+        if ($status === 'published' && !isset($data['published_at'])) {
+            $article->published_at = date('Y-m-d H:i:s');
+        }
         
         // Générer un slug unique
         $article->generateSlug();
@@ -90,6 +117,26 @@ class CreateArticleController extends AbstractController {
                 $sql = "INSERT INTO article_tag (article_id, tag_id) VALUES (:article_id, :tag_id)";
                 $stmt = $articleRepository->getConnexion()->prepare($sql);
                 $stmt->execute(['article_id' => $article->id, 'tag_id' => $tagId]);
+            }
+        }
+
+        // Associer les médias si fournis
+        if (!empty($data['media_ids']) && is_array($data['media_ids'])) {
+            $mediaRepository = new MediaRepository();
+            $displayOrder = 0;
+            
+            foreach ($data['media_ids'] as $mediaId) {
+                $mediaId = (int) $mediaId;
+                if ($mediaId > 0) {
+                    $isFeatured = (isset($data['featured_media_id']) && $data['featured_media_id'] == $mediaId);
+                    $mediaRepository->attachToArticle($mediaId, $article->id, $isFeatured, $displayOrder);
+                    $displayOrder++;
+                }
+            }
+            
+            // Définir l'image à la une si spécifiée
+            if (isset($data['featured_media_id']) && $data['featured_media_id'] > 0) {
+                $mediaRepository->setFeatured((int)$data['featured_media_id'], $article->id);
             }
         }
 

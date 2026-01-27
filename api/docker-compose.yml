@@ -8,6 +8,7 @@ services:
                - ./app:/var/www/html
                - ./log:/var/log/apache2/
                - ./dist:/var/www/html/dist
+               - ./app/uploads:/var/www/html/uploads
           ports:
                - 8079:80
      php-framework-postgres:
