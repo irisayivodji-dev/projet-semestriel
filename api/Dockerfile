@@ -18,4 +18,7 @@ RUN apt-get install -y nodejs
 RUN a2enmod rewrite
 RUN service apache2 restart
 
+# Copier la configuration PHP personnalisée
+COPY php.ini /usr/local/etc/php/conf.d/uploads.ini
+
 EXPOSE 80

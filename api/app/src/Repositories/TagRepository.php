@@ -28,7 +28,24 @@ class TagRepository extends AbstractRepository {
 
     public function findByName(string $name): ?Tag
     {
-        return $this->findOneBy(['name' => $name]);
+        // Recherche insensible à la casse
+        $sql = "SELECT * FROM {$this->getTable()} WHERE LOWER(name) = LOWER(:name) LIMIT 1";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->execute(['name' => $name]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        
+        if (!$result) {
+            return null;
+        }
+        
+        $tag = new Tag();
+        foreach ($result as $key => $value) {
+            if (property_exists($tag, $key)) {
+                $tag->$key = $value;
+            }
+        }
+        
+        return $tag;
     }
     
     public function create(Tag $tag): bool

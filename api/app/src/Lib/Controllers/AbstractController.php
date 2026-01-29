@@ -97,6 +97,59 @@ abstract class AbstractController {
         return PermissionService::canPublishArticles();
     }
     
+    protected function canManageOwnArticles(): bool
+    {
+        return PermissionService::canManageOwnArticles();
+    }
+    
+    /**
+     * Vérifie si l'utilisateur peut gérer un article spécifique
+     * - Admin/Editor peuvent gérer tous les articles
+     * - Author peut gérer uniquement ses propres articles
+     */
+    protected function canManageArticle($article): bool
+    {
+        // Si l'utilisateur peut gérer tous les articles
+        if ($this->canManageAllArticles()) {
+            return true;
+        }
+        
+        // Sinon, vérifier si c'est son propre article
+        if ($this->canManageOwnArticles()) {
+            $authService = new \App\Lib\Auth\AuthService();
+            $currentUser = $authService->getCurrentUser();
+            
+            if ($currentUser && isset($article->author_id)) {
+                return $article->author_id === $currentUser->id;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Exige que l'utilisateur puisse gérer un article spécifique
+     * Redirige vers /403 si non autorisé
+     */
+    protected function requireCanManageArticle($article): void
+    {
+        if (!$this->canManageArticle($article)) {
+            header('Location: /403');
+            exit;
+        }
+    }
+    
+    /**
+     * Exige que l'utilisateur puisse créer des articles (tous les rôles authentifiés)
+     */
+    protected function requireCanCreateArticles(): void
+    {
+        if (!\App\Lib\Auth\Session::isAuthenticated()) {
+            header('Location: /login');
+            exit;
+        }
+    }
+    
     protected function isAdmin(): bool
     {
         return PermissionService::isAdmin();

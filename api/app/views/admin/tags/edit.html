@@ -41,18 +41,18 @@
                 </div>
 
                 <div class="users__form-group">
-                    <label for="description" class="users__label">Description <span class="users__required">*</span></label>
+                    <label for="description" class="users__label">Description</label>
                     <textarea 
                         id="description" 
                         name="description" 
                         class="users__input <?= isset($errors['description']) ? 'users__input--error' : '' ?>"
                         rows="5"
                         maxlength="1000"
-                        required
                     ><?= htmlspecialchars($old['description'] ?? $tag->description ?? '') ?></textarea>
                     <?php if (isset($errors['description'])): ?>
                         <span class="users__error"><?= htmlspecialchars($errors['description']) ?></span>
                     <?php endif; ?>
+                    <small class="users__help">Description optionnelle du tag</small>
                 </div>
 
                 <div class="users__form-actions">

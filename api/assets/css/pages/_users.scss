@@ -3,9 +3,16 @@
 @use "../partials/functions" as f;
 
 .users {
+  &__empty__row {
+    td {
+      text-align: center !important;
+      padding: f.rem(40) !important;
+      color: var(--gray-600);
+      font-size: f.rem(16);
+    }
+  }
   &__empty {
     text-align: center;
-    padding: f.rem(40);
     color: var(--gray-600);
     font-size: f.rem(16);
   }
@@ -54,6 +61,11 @@
         vertical-align: middle;
       }
 
+      
+      td:first-child {
+        text-align: left;
+      }
+
       // Colonne description avec limitation
       td:nth-child(2) {
         max-width: f.rem(300);
@@ -74,7 +86,7 @@
     display: inline-block;
     padding: f.rem(4) f.rem(12);
     border-radius: f.rem(12);
-    font-size: f.rem(12);
+    font-size: f.rem(10);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -92,6 +104,22 @@
     &--author {
       background: var(--gray-100);
       color: var(--gray-700);
+    }
+
+    // Statuts d'articles
+    &--draft {
+      background: var(--gray-100);
+      color: var(--gray-700);
+    }
+
+    &--published {
+      background: var(--green-100);
+      color: var(--green-700);
+    }
+
+    &--archived {
+      background: var(--yellow-100);
+      color: var(--yellow-700);
     }
   }
 
@@ -146,6 +174,51 @@
     }
   }
 
+  &__details {
+    @include m.flex-center;
+    background: var(--gray-200);
+    color: var(--gray-800);
+    border-radius: f.rem(6);
+    padding: f.rem(8);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+
+    &:hover {
+      background: var(--gray-300);
+      transform: translateY(-1px);
+    }
+  }
+
+  &__publish {
+    background: var(--green-600);
+    color: white;
+    border: none;
+    border-radius: f.rem(6);
+    padding: f.rem(8) f.rem(12);
+    font-size: f.rem(13);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: f.rem(6);
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    svg {
+      flex-shrink: 0;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    &:hover {
+      background: var(--green-700);
+      transform: translateY(-1px);
+    }
+  }
+
   // Messages flash
   &__alert {
     padding: f.rem(16) f.rem(20);
@@ -180,10 +253,46 @@
     border-radius: f.rem(8);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     max-width: f.rem(600);
+
+    &--two-columns {
+      max-width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: f.rem(32);
+      align-items: start;
+
+      @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+        gap: f.rem(24);
+      }
+    }
+  }
+
+  &__form-main {
+    display: flex;
+    flex-direction: column;
+    gap: f.rem(12);
+  }
+
+  &__form-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: f.rem(12);
+    position: sticky;
+    top: f.rem(20);
+    max-height: calc(100vh - f.rem(40));
+    overflow-y: visible;
+    overflow-x: visible;
+
+    @media (max-width: 1024px) {
+      position: static;
+      max-height: none;
+      overflow-y: visible;
+    }
   }
 
   &__form-group {
-    margin-bottom: f.rem(12);
+    margin-bottom: 0;
 
     &--inline {
       display: flex;
@@ -208,6 +317,19 @@
     font-size: f.rem(14);
     color: var(--gray-700);
     margin-bottom: f.rem(8);
+    line-height: 1.5;
+  }
+  
+  // S'assurer que les small ne prennent JAMAIS les styles des labels
+  small,
+  .users__form-group small,
+  small.users__help {
+    font-weight: 400 !important;
+    font-size: f.rem(12) !important;
+    color: var(--gray-500) !important;
+    display: block;
+    margin-top: f.rem(4);
+    line-height: 1.4 !important;
   }
 
   &__required {
@@ -271,7 +393,33 @@
     display: flex;
     gap: f.rem(12);
     margin-top: f.rem(32);
+    padding-top: f.rem(24);
+    border-top: 1px solid var(--gray-200);
     flex-wrap: wrap;
+
+    @media (max-width: 1024px) {
+      position: fixed;
+      bottom: 0;
+      left: f.rem(250); // Prendre en compte la sidebar
+      right: 0;
+      background: var(--white);
+      padding: f.rem(16) f.rem(20);
+      margin: 0;
+      border-top: 1px solid var(--gray-200);
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      justify-content: stretch;
+
+      button,
+      a {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      left: 0; // Sur mobile, la sidebar est cachée
+    }
   }
 
 
