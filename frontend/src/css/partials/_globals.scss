@@ -32,11 +32,7 @@
     --bg-color : var(--white);
     --text-color : var(--black-hover);
     --shadow-color: rgba(0, 0, 0, 0.1);
-
-    @media (prefers-color-scheme: dark) {
-        --bg-color : var(--black-hover);
-        --text-color : var(--white);
-    }
+    --link-hover-color: var(--indigo);
 }
 
 body {
@@ -44,6 +40,16 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
 }
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s;
+    &:hover {
+        color: var(--link-hover-color);
+    }
+}
+
 button {
     all: unset;
 }
@@ -53,9 +59,4 @@ img{
     height: auto;
 }
 
-.dark,
-[data-theme="dark"] {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-}
 }

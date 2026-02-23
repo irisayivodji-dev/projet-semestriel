@@ -1,101 +1,138 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/src/css/main.scss">
-    <script type="module" src="/src/main.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevFlow — Blog tech &amp; développement web</title>
+  <meta name="description" content="Articles, tutoriels et réflexions autour du développement web, des architectures modernes et des bonnes pratiques." />
+  <link rel="stylesheet" href="/src/css/main.scss" />
+  <script type="module" src="/src/js/pages/home.js"></script>
+  <script type="module" src="/src/main.js"></script>
 </head>
 <body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header" id="site-header">
     <div class="container">
-        <section>
-            <h2>.button</h2>
-            <p>
-                <a href="#" class="button button--lg button--primary">Button</a>
-                <a href="#" class=" button button--primary">Button</a>
-                <a href="#" class="button button--sm button--primary">Button</a>
-            </p>
+      <a href="/" class="logo-link">DevFlow</a>
 
-            <p>
-                <a href="#" class="button button--lg button--secondary">Button</a>
-                <a href="#" class="button button button--secondary">Button</a>
-                <a href="#" class="button button--sm button--secondary">Button</a>
-            </p>
+      <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
+        <ul class="main-nav__list">
+          <li><a href="/" class="main-nav__link">Accueil</a></li>
+          <li><a href="#" class="main-nav__link">À propos</a></li>
+          <li><a href="#" class="main-nav__link">Contact</a></li>
+        </ul>
+        <div class="main-nav__auth">
+          <a href="#" class="main-nav__link">S'inscrire</a>
+          <a href="#" class="main-nav__cta">Se connecter</a>
+        </div>
+      </nav>
 
-            <p>
-                <a href="#" class="button button--lg button--danger">Button</a>
-                <a href="#" class="button button button--danger">Button</a>
-                <a href="#" class="button button--sm button--danger">Button</a>
-            </p>
-        </section>
-        <section>
-            <h2>Cards</h2>
-            <p>
-                <article class="card">
-                    <img src="/images/image.jpg" class="card__image">
-                    <h2 class="card__title">Card Title</h2>
-                    <p class="card__description ">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="button button--primary">Button</a>
-                </article>
-                <article class="card-horizontal mt-6">
-                    <img src="/images/image.jpg" class="card-horizontal__image">
-                    <div class="card-horizontal__bloc">
-                        <h2 class="card-horizontal__title">Card Title</h2>
-                        <p class="card-horizontal__description ">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="button button--danger">Button</a>
-                    </div>
-                </article>
-            </p>
-        </section>
-        <section class="mt-6">
-            <h2>Banner</h2>
-            <div class="banner" style="background-image:url('assets/images/fond.jpg')"></div>
-            <div class="banner banner--text mt-6" style="background-image:url('assets/images/fond.jpg')">
-                <h2 class="banner__title">Lorem ipsum dolor sit amet, 
-                consectetur adipiscing elit. Cras ullamcorper nulla a 
-                ipsum imperdiet, ac porttitor dui sagittis.</h2>
-            </div>
-        </section>
-        <section class="mt-6 spinner-section">
-            <h2>Spinner</h2>
-            <div class="spinner"></div><br>
-            <div class="spinner spinner--primary"></div><br>
-            <div class="spinner spinner--secondary"></div><br>
-            <div class="spinner spinner--danger"></div><br>
-        </section>
-        <section class="m-6">
-            <h2>.menu</h2>
-            
-            <h3>Menu par défaut</h3>
-            <ul class="menu menu--light-grey">
-                <li class="menu__item"><a href="#" class="menu__link menu__link--active">Copy item</a></li>
-                <li class="menu__item"><a href="#" class="menu__link">Past item</a></li>
-                <li class="menu__item"><a href="#" class="menu__link">Cut item</a></li>
-            </ul>
-            
-            <h3>Menu primary</h3>
-            <ul class="menu menu--primary">
-                <li class="menu__item"><a href="#" class="menu__link menu__link--active">Copy item</a></li>
-                <li class="menu__item"><a href="#" class="menu__link">Past item</a></li>
-                <li class="menu__item"><a href="#" class="menu__link">Cut item</a></li>
-            </ul>
-            
-            <h3>Menu secondary</h3>
-            <ul class="menu menu--secondary">
-                <li class="menu__item"><a href="#" class="menu__link menu__link--active">Copy item</a></li>
-                <li class="menu__item"><a href="#" class="menu__link">Past item</a></li>
-                <li class="menu__item"><a href="#" class="menu__link">Cut item</a></li>
-            </ul>
-            
-            <h3>Menu danger</h3>
-            <ul class="menu menu--danger">
-                <li class="menu__item"><a href="#" class="menu__link menu__link--active">Copy item</a></li>
-                <li class="menu__item"><a href="#" class="menu__link">Past item</a></li>
-                <li class="menu__item"><a href="#" class="menu__link">Cut item</a></li>
-            </ul>
-        </section>
+      <button class="menu-btn" id="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="main-nav">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
     </div>
-    
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="blog-hero" aria-label="En-tête du blog">
+    <div class="blog-hero__overlay"></div>
+    <div class="container blog-hero__content">
+      <span class="blog-hero__label">Le blog des développeurs</span>
+      <h1 class="blog-hero__title">Idées, code &amp; inspiration</h1>
+      <p class="blog-hero__desc">
+        Tutoriels, réflexions et articles autour du développement web,
+        des architectures modernes et des bonnes pratiques.
+      </p>
+      <a href="#articles" class="button button--primary button--lg">
+        Explorer les articles ↓
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== FILTRES CATÉGORIES ===== -->
+  <div class="blog-cats" role="navigation" aria-label="Filtrer par catégorie">
+    <div class="container blog-cats__inner">
+      <!-- Le bouton "Tous" est fixe ; les autres sont injectés dynamiquement par home.js via GET /api/v1/categories -->
+      <a href="#" class="blog-cats__item blog-cats__item--active" data-cat="">Tous</a>
+    </div>
+  </div>
+
+  <!-- ===== CONTENU PRINCIPAL ===== -->
+  <main class="blog" id="articles">
+    <div class="container blog__body">
+
+      <!-- Colonne articles -->
+      <div class="blog__content">
+        <h2 class="blog__section-title">Derniers articles publiés</h2>
+
+        <div id="articles-loading" class="blog__loading">
+          <span class="spinner spinner--primary spinner--lg"></span>
+          <p>Chargement des articles…</p>
+        </div>
+
+        <div id="articles-empty" class="blog__empty" hidden>
+          Aucun article disponible pour le moment.
+        </div>
+
+        <ul id="articles-list" class="blog__grid" hidden></ul>
+
+        <nav id="articles-pagination" class="pagination" hidden aria-label="Pagination des articles"></nav>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="blog__sidebar" aria-label="Barre latérale">
+
+        <!-- Recherche -->
+        <div class="sidebar-card">
+          <h3 class="sidebar-card__title">Rechercher</h3>
+          <form class="sidebar-search" id="search-form" role="search">
+            <input
+              type="search"
+              id="search-input"
+              name="q"
+              placeholder="Mot-clé…"
+              class="sidebar-search__input"
+              aria-label="Rechercher un article"
+            />
+            <button type="submit" class="sidebar-search__btn" aria-label="Lancer la recherche">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- Tags populaires -->
+        <div class="sidebar-card">
+          <h3 class="sidebar-card__title">Tags populaires</h3>
+          <div class="sidebar-tags">
+            <a href="#" class="sidebar-tags__tag" data-cat="javascript">JavaScript</a>
+            <a href="#" class="sidebar-tags__tag" data-cat="css">CSS</a>
+            <a href="#" class="sidebar-tags__tag" data-cat="php">PHP</a>
+            <a href="#" class="sidebar-tags__tag" data-cat="ux">UX/UI</a>
+            <a href="#" class="sidebar-tags__tag" data-cat="api">API REST</a>
+            <a href="#" class="sidebar-tags__tag" data-cat="docker">Docker</a>
+            <a href="#" class="sidebar-tags__tag" data-cat="git">Git</a>
+            <a href="#" class="sidebar-tags__tag" data-cat="performance">Performance</a>
+          </div>
+        </div>
+
+
+
+      </aside>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="blog__footer">
+    <div class="container">
+      <p class="blog__footer-text">© 2026 DevFlow — Tous droits réservés.</p>
+    </div>
+  </footer>
+
 </body>
 </html>

@@ -88,6 +88,30 @@ class MediaRepository extends AbstractRepository
         return $result ? $this->hydrate($result) : null;
     }
 
+    // Récupère les images à la une pour un lot d'articles en une seule requête
+    // Retourne un tableau indexé par article_id => Media
+    public function findFeaturedByArticleIds(array $articleIds): array
+    {
+        if (empty($articleIds)) return [];
+
+        $placeholders = implode(',', array_fill(0, count($articleIds), '?'));
+        $sql = "SELECT m.*, am.article_id
+                FROM {$this->getTable()} m
+                INNER JOIN article_media am ON m.id = am.media_id
+                WHERE am.article_id IN ({$placeholders}) AND am.is_featured = TRUE";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->execute(array_values($articleIds));
+
+        $map = [];
+        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            $articleId = (int) $row['article_id'];
+            if (!isset($map[$articleId])) {
+                $map[$articleId] = $this->hydrate($row);
+            }
+        }
+        return $map;
+    }
+
     // Associe un média à un article
     public function attachToArticle(int $mediaId, int $articleId, bool $isFeatured = false, int $displayOrder = 0): void
     {

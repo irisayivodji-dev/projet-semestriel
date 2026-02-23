@@ -79,7 +79,24 @@ docker exec -it php-CMS bash -c "cd /var/www/html && sass -w assets/main.scss di
 npm run watch
 ```
 
-#### 5. Vérifier que tout fonctionne
+#### 5. Lancer la page publique (frontend)
+
+Le frontend (page d'accueil blog + page article) est une application Vite indépendante dans le dossier `frontend/`.
+
+```bash
+cd frontend
+npm install       # uniquement à la première fois
+npm run dev       # démarre le serveur de développement Vite
+```
+
+- **Page d'accueil :** <http://localhost:5173>
+- **Page article :** <http://localhost:5173/article.html>
+
+> Les conteneurs Docker (`docker-compose up -d`) doivent être démarrés **avant** de lancer le frontend, car il consomme l'API sur `http://localhost:8079`.
+
+Pour générer la version de production :
+
+#### 6. Vérifier que tout fonctionne
 
 **Vérifier la base de données :**
 

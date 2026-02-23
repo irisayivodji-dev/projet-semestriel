@@ -353,5 +353,10 @@
     "path": "/admin/media/delete/:id",
     "method": "POST",
     "controller": "Admin\\Media\\DeleteMediaController"
-  }
+  },
+  {
+  "path": "/",
+  "method": "GET",
+  "controller": "Public\\HomeController"
+}
 ]

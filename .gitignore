@@ -13,4 +13,7 @@ node_modules/
 vendor/
 # Mac/Windows
 .DS_Store
+# Uploads utilisateurs (fichiers locaux)
+api/app/uploads/
+api/uploads/
 Thumbs.db
