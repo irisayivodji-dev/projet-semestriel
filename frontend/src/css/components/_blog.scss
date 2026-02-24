@@ -77,6 +77,15 @@
         gap: f.rem(6);
       }
 
+      &__link--admin {
+        font-size: f.rem(13);
+        opacity: 0.6;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+
       &__cta {
         display: inline-flex;
         align-items: center;

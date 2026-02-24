@@ -1,4 +1,5 @@
 // navbar — à importer dans chaque page, nécessite <div id="navbar-placeholder"></div>
+import { API_BASE } from '../services/api.js';
 
 const NAVBAR_HTML = `
 <header class="site-header" id="site-header">
@@ -6,14 +7,9 @@ const NAVBAR_HTML = `
     <a href="/" class="logo-link">DevFlow</a>
 
     <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
-      <ul class="main-nav__list">
-        <li><a href="/" class="main-nav__link">Accueil</a></li>
-        <li><a href="#" class="main-nav__link">À propos</a></li>
-        <li><a href="#" class="main-nav__link">Contact</a></li>
-      </ul>
+      <ul class="main-nav__list"></ul>
       <div class="main-nav__auth">
-        <a href="#" class="main-nav__link">S'inscrire</a>
-        <a href="#" class="main-nav__cta">Se connecter</a>
+        <a href="${API_BASE}/admin" class="main-nav__link main-nav__link--admin" target="_blank" rel="noopener noreferrer">Administration</a>
       </div>
     </nav>
 
