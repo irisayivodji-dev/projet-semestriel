@@ -388,6 +388,16 @@
         background: var(--light-grey);
         color: var(--primary);
       }
+
+      &--active {
+        background: color-mix(in srgb, var(--primary) 10%, transparent);
+        color: var(--primary);
+        font-weight: 600;
+
+        &::before {
+          color: var(--primary);
+        }
+      }
     }
 
     &__empty {

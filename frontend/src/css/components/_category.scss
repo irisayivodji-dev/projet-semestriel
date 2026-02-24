@@ -1,0 +1,97 @@
+@use "sass:map";
+@use "../partials/variables" as v;
+@use "../partials/functions" as f;
+
+@layer components {
+
+  // hero en haut de la page catégorie
+  .cat-hero {
+    background: var(--black);
+    color: var(--white);
+    padding-top: calc(64px + #{f.rem(48)});
+    padding-bottom: f.rem(40);
+
+    &__inner {
+      display: flex;
+      flex-direction: column;
+      gap: f.rem(12);
+    }
+
+    &__breadcrumb {
+      font-size: f.rem(13);
+      color: rgb(255 255 255 / 55%);
+      display: flex;
+      align-items: center;
+      gap: f.rem(6);
+
+      a {
+        color: rgb(255 255 255 / 55%);
+        text-decoration: none;
+        transition: color 0.2s;
+
+        &:hover {
+          color: var(--white);
+        }
+      }
+    }
+
+    &__label {
+      display: inline-block;
+      font-size: f.rem(12);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--indigo);
+      background: color-mix(in srgb, var(--indigo) 15%, transparent);
+      padding: f.rem(4) f.rem(10);
+      border-radius: f.rem(20);
+      width: fit-content;
+    }
+
+    &__title {
+      margin: 0;
+      font-size: clamp(f.rem(28), 4vw, f.rem(44));
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    &__desc {
+      margin: 0;
+      font-size: f.rem(16);
+      line-height: 1.65;
+      color: rgb(255 255 255 / 65%);
+      max-width: f.rem(560);
+    }
+
+    &__count {
+      margin: 0;
+      font-size: f.rem(13);
+      color: rgb(255 255 255 / 45%);
+    }
+  }
+
+  // états de chargement / erreur pleine page
+  .cat-loading,
+  .cat-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: f.rem(16);
+    min-height: 60vh;
+    padding: f.rem(48) f.rem(24);
+    text-align: center;
+    color: var(--secondary);
+    font-size: f.rem(15);
+  }
+
+  .cat-error {
+    gap: f.rem(24);
+
+    &__msg {
+      font-size: f.rem(18);
+      color: var(--secondary);
+    }
+  }
+}

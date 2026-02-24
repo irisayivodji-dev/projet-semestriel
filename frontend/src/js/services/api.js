@@ -33,3 +33,11 @@ export function getArticleBySlug(slug) {
 export function getCategories() {
   return request('/api/v1/categories');
 }
+
+// catégorie par slug (recherche dans la liste complète)
+export async function getCategoryBySlug(slug) {
+  const data = await getCategories();
+  const cat = (data.categories ?? []).find(c => c.slug === slug);
+  if (!cat) throw new Error(`Catégorie "${slug}" introuvable`);
+  return cat;
+}

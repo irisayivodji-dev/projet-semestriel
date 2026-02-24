@@ -42,6 +42,7 @@ function renderArticle(article) {
   // Fil d'Ariane
   if (categories.length > 0) {
     document.getElementById('bc-category').textContent = categories[0].name;
+    document.getElementById('bc-category').href = `/category.html?slug=${encodeURIComponent(categories[0].slug)}`;
   }
 
   // Badges catégories
@@ -49,7 +50,7 @@ function renderArticle(article) {
   catsEl.innerHTML = categories
     .map(
       (c) =>
-        `<a href="/?category=${encodeURIComponent(c.slug)}" class="post__cat-badge">${c.name}</a>`
+        `<a href="/category.html?slug=${encodeURIComponent(c.slug)}" class="post__cat-badge">${c.name}</a>`
     )
     .join('');
 
@@ -130,7 +131,7 @@ async function loadSidebarCategories() {
     container.innerHTML = categories
       .map(
         (c) =>
-          `<a href="/?category=${encodeURIComponent(c.slug)}" class="sidebar-categories__item">${c.name}</a>`
+          `<a href="/category.html?slug=${encodeURIComponent(c.slug)}" class="sidebar-categories__item">${c.name}</a>`
       )
       .join('');
   } catch {
