@@ -1,7 +1,7 @@
 // couche d'accès à l'API backend — toutes les pages passent par ici
 export const API_BASE = 'http://localhost:8079';
 
-// envoie une requête GET et retourne le JSON ; lève une erreur si le statut HTTP est en erreur
+// envoie une requête GET et retourne le JSON 
 async function request(path, params = {}) {
   const url = new URL(`${API_BASE}${path}`);
 
@@ -34,10 +34,28 @@ export function getCategories() {
   return request('/api/v1/categories');
 }
 
+// tous les tags
+export function getTags() {
+  return request('/api/v1/tags');
+}
+
 // catégorie par slug (recherche dans la liste complète)
 export async function getCategoryBySlug(slug) {
   const data = await getCategories();
   const cat = (data.categories ?? []).find(c => c.slug === slug);
   if (!cat) throw new Error(`Catégorie "${slug}" introuvable`);
   return cat;
+}
+
+// tag par slug (recherche dans la liste complète)
+export async function getTagBySlug(slug) {
+  const data = await getTags();
+  const tag = (data.tags ?? []).find(t => t.slug === slug);
+  if (!tag) throw new Error(`Tag "${slug}" introuvable`);
+  return tag;
+}
+
+// articles d'un tag par son ID
+export function getArticlesByTagId(id, page = 1, perPage = 10) {
+  return request(`/api/v1/tags/${id}/articles`, { page, per_page: perPage });
 }

@@ -98,21 +98,6 @@ function renderArticle(article) {
     tagsEl.hidden = true;
   }
 
-  // partage
-  const shareUrl = encodeURIComponent(location.href);
-  const shareTitle = encodeURIComponent(title);
-  document.getElementById('share-twitter').href =
-    `https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`;
-  document.getElementById('share-linkedin').href =
-    `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`;
-  document.getElementById('share-copy')?.addEventListener('click', () => {
-    navigator.clipboard.writeText(location.href).then(() => {
-      const btn = document.getElementById('share-copy');
-      const prev = btn.innerHTML;
-      btn.textContent = '✓ Copié !';
-      setTimeout(() => { btn.innerHTML = prev; }, 2000);
-    });
-  });
 }
 
 

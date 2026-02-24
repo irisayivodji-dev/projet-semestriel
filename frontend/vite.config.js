@@ -7,6 +7,7 @@ export default defineConfig({
         index: "index.html",
         article: "article.html",
         category: "category.html",
+        tag: "tag.html",
       },
       output: {
         entryFileNames: "assets/js/[name].js",

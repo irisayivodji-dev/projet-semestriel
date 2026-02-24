@@ -1,4 +1,4 @@
-// navbar — à importer dans chaque page, nécessite <div id="navbar-placeholder"></div>
+
 import { API_BASE } from '../services/api.js';
 
 const NAVBAR_HTML = `
@@ -22,7 +22,6 @@ const NAVBAR_HTML = `
 </header>
 `;
 
-// met en surbrillance le lien de la page en cours
 function setActiveLink() {
   const path = location.pathname;
   document.querySelectorAll('.main-nav__link').forEach((link) => {

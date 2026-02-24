@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catégorie — DevFlow</title>
+  <meta name="description" content="Articles par tags sur DevFlow." />
+  <link rel="stylesheet" href="/src/css/main.scss" />
+  <script type="module" src="/src/js/pages/tag.js"></script>
+  <script type="module" src="/src/main.js"></script>
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <div id="cat-loading" class="cat-loading">
+    <span class="spinner spinner--indigo spinner--lg"></span>
+    <p>Chargement du tag…</p>
+  </div>
+  <div id="cat-error" class="cat-error" hidden>
+    <p id="cat-error-msg" class="cat-error__msg">Tag introuvable.</p>
+    <a href="/" class="button button--indigo">Retour à l'accueil</a>
+  </div>
+
+  
+  <div id="cat-main" hidden>
+
+    <section class="cat-hero" aria-label="En-tête tag">
+      <div class="container cat-hero__inner">
+        <nav class="cat-hero__breadcrumb" aria-label="Fil d'Ariane">
+          <a href="/">Accueil</a>
+          <span aria-hidden="true">›</span>
+          <span id="cat-name-bc"></span>
+        </nav>
+        <span class="cat-hero__label">Tag</span>
+        <h1 class="cat-hero__title" id="cat-title"></h1>
+        <p class="cat-hero__desc" id="cat-desc"></p>
+      </div>
+    </section>
+
+    <!-- liste des articles -->
+    <main class="blog" id="articles" aria-label="Articles du tag">
+      <div class="container blog__body">
+
+        
+        <div class="blog__content">
+
+          <div id="articles-loading" class="blog__loading">
+            <span class="spinner spinner--indigo spinner--lg"></span>
+            <p>Chargement des articles…</p>
+          </div>
+
+          <div id="articles-empty" class="blog__empty" hidden>
+            Aucun article ayant pour le moment ce tag.
+          </div>
+
+          <ul id="articles-list" class="blog__grid" hidden></ul>
+
+          <nav id="articles-pagination" class="pagination" hidden aria-label="Pagination des articles"></nav>
+        </div>
+
+        <!-- sidebar -->
+        <aside class="blog__sidebar" aria-label="Barre latérale">
+
+          <!-- recherche -->
+          <div class="sidebar-card">
+            <h3 class="sidebar-card__title">Rechercher</h3>
+            <form class="sidebar-search" id="search-form" role="search">
+              <input
+                type="search"
+                id="search-input"
+                name="q"
+                placeholder="Mot-clé…"
+                class="sidebar-search__input"
+                aria-label="Rechercher un article"
+              />
+              <button type="submit" class="sidebar-search__btn" aria-label="Lancer la recherche">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+                </svg>
+              </button>
+            </form>
+          </div>
+
+          
+          <div class="sidebar-card">
+            <h3 class="sidebar-card__title">Catégories</h3>
+            <div id="sidebar-cats" class="sidebar-categories">
+              <span class="spinner spinner--indigo spinner--sm"></span>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+    </main>
+
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+</body>
+</html>
