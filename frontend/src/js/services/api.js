@@ -1,7 +1,5 @@
-// couche d'accès à l'API backend — toutes les pages passent par ici
 export const API_BASE = 'http://localhost:8079';
 
-// envoie une requête GET et retourne le JSON 
 async function request(path, params = {}) {
   const url = new URL(`${API_BASE}${path}`);
 
@@ -14,7 +12,7 @@ async function request(path, params = {}) {
   return res.json();
 }
 
-// liste paginée des articles avec filtres optionnels
+// liste paginée des articles
 export function getArticles({ page = 1, perPage = 10, category = '', search = '' } = {}) {
   return request('/api/v1/articles', {
     page,
@@ -29,14 +27,38 @@ export function getArticleBySlug(slug) {
   return request(`/api/v1/articles/slug/${encodeURIComponent(slug)}`);
 }
 
+const cacheLiveTime = 15 * 60 * 1000; 
+
+function cacheGet(key) {
+  try {
+    const raw = sessionStorage.getItem(key);
+    if (!raw) return null;
+    const { data, ts } = JSON.parse(raw);
+    if (Date.now() - ts > cacheLiveTime) { sessionStorage.removeItem(key); return null; }
+    return data;
+  } catch { return null; }
+}
+
+function cacheSet(key, data) {
+  try { sessionStorage.setItem(key, JSON.stringify({ data, ts: Date.now() })); } catch {}
+}
+
 // toutes les catégories
-export function getCategories() {
-  return request('/api/v1/categories');
+export async function getCategories() {
+  const cached = cacheGet('api:categories');
+  if (cached) return cached;
+  const data = await request('/api/v1/categories');
+  cacheSet('api:categories', data);
+  return data;
 }
 
 // tous les tags
-export function getTags() {
-  return request('/api/v1/tags');
+export async function getTags() {
+  const cached = cacheGet('api:tags');
+  if (cached) return cached;
+  const data = await request('/api/v1/tags');
+  cacheSet('api:tags', data);
+  return data;
 }
 
 // catégorie par slug (recherche dans la liste complète)

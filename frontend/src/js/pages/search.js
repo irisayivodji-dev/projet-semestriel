@@ -1,17 +1,18 @@
 import { initNavbar } from '../components/navbar.js';
 import { initFooter } from '../components/footer.js';
-import { API_BASE, getCategoryBySlug, getArticles, getCategories } from '../services/api.js';
+import { API_BASE, getArticles, getCategories } from '../services/api.js';
 
 const loadingEl    = document.getElementById('cat-loading');
-const errorEl      = document.getElementById('cat-error');
-const errorMsgEl   = document.getElementById('cat-error-msg');
 const mainEl       = document.getElementById('cat-main');
 const listEl       = document.getElementById('articles-list');
 const listLoadEl   = document.getElementById('articles-loading');
 const emptyEl      = document.getElementById('articles-empty');
 const paginationEl = document.getElementById('articles-pagination');
 
-let currentSlug = '';
+let currentQuery = '';
+
+initNavbar();
+initFooter();
 
 function escapeHtml(text) {
   if (!text) return '';
@@ -37,13 +38,11 @@ function getExcerpt(article) {
   return text.length > 160 ? text.slice(0, 160) + '…' : text;
 }
 
-
 function buildArticleItem(article) {
   const excerpt  = getExcerpt(article);
   const rawDate  = article.published_at || article.updated_at || article.created_at;
   const slug     = article.slug || article.id;
   const link     = `/article.html?slug=${encodeURIComponent(slug)}`;
-  const readTime = estimateReadTime(article);
 
   const imgSrc = article.cover_image?.url
     ? `${API_BASE}${article.cover_image.url}`
@@ -74,13 +73,11 @@ function buildArticleItem(article) {
   return li;
 }
 
-// pagination
-
 function buildPagination(currentPage, totalPages) {
   if (totalPages <= 1) return '';
 
   const base  = window.location.pathname;
-  const extra = `&slug=${encodeURIComponent(currentSlug)}`;
+  const extra = `&q=${encodeURIComponent(currentQuery)}`;
   const items = [];
 
   items.push(currentPage > 1
@@ -109,7 +106,6 @@ function buildPagination(currentPage, totalPages) {
   return `<ul class="pagination__list">${items.join('')}</ul>`;
 }
 
-
 async function loadPage(page = 1) {
   listLoadEl.hidden = false;
   emptyEl.hidden    = true;
@@ -117,32 +113,37 @@ async function loadPage(page = 1) {
   paginationEl.hidden = true;
   listEl.innerHTML  = '';
 
-  const data = await getArticles({ page, perPage: 10, category: currentSlug });
+  try {
+    const data = await getArticles({ page, perPage: 10, search: currentQuery });
 
-  listLoadEl.hidden = true;
+    listLoadEl.hidden = true;
 
-  if (!data.success) {
-    emptyEl.textContent = 'Une erreur est survenue lors du chargement.';
+    if (!data.success) {
+      emptyEl.textContent = 'Une erreur est survenue lors de la recherche.';
+      emptyEl.hidden = false;
+      return;
+    }
+
+    if (!data.articles || data.articles.length === 0) {
+      emptyEl.textContent = `Aucun résultat pour « ${currentQuery} ».`;
+      emptyEl.hidden = false;
+      return;
+    }
+
+    data.articles.forEach(a => listEl.appendChild(buildArticleItem(a)));
+    listEl.hidden = false;
+
+    if (data.totalPages > 1) {
+      paginationEl.innerHTML = buildPagination(data.currentPage, data.totalPages);
+      paginationEl.hidden = false;
+    }
+  } catch (err) {
+    listLoadEl.hidden = true;
+    emptyEl.textContent = 'Erreur lors de la recherche.';
     emptyEl.hidden = false;
-    return;
-  }
-
-  if (!data.articles || data.articles.length === 0) {
-    emptyEl.textContent = 'Aucun article dans cette catégorie pour le moment.';
-    emptyEl.hidden = false;
-    return;
-  }
-
-  data.articles.forEach(a => listEl.appendChild(buildArticleItem(a)));
-  listEl.hidden = false;
-
-  if (data.totalPages > 1) {
-    paginationEl.innerHTML = buildPagination(data.currentPage, data.totalPages);
-    paginationEl.hidden = false;
+    console.error('[search.js] loadPage error:', err);
   }
 }
-
-// sidebar catégories
 
 async function loadSidebarCategories() {
   const container = document.getElementById('sidebar-cats');
@@ -152,67 +153,46 @@ async function loadSidebarCategories() {
     const cats = data.categories ?? [];
     if (!cats.length) return;
     container.innerHTML = cats
-      .map(c => `<a href="/category.html?slug=${encodeURIComponent(c.slug)}" class="sidebar-categories__item${c.slug === currentSlug ? ' sidebar-categories__item--active' : ''}">${escapeHtml(c.name)}</a>`)
+      .map(c => `<a href="/category.html?slug=${encodeURIComponent(c.slug)}" class="sidebar-categories__item">${escapeHtml(c.name)}</a>`)
       .join('');
   } catch {
     container.innerHTML = '<p class="sidebar-categories__empty">Erreur de chargement.</p>';
   }
 }
 
-function initSearchForm() {
-  document.getElementById('search-form')?.addEventListener('submit', e => {
-    e.preventDefault();
-    const q = document.getElementById('search-input')?.value.trim();
-    if (q) location.href = `/search.html?q=${encodeURIComponent(q)}`;
-  });
-}
-
+document.getElementById('search-form')?.addEventListener('submit', e => {
+  e.preventDefault();
+  const q = document.getElementById('search-input')?.value.trim();
+  if (q) location.href = `/search.html?q=${encodeURIComponent(q)}`;
+});
 
 async function init() {
   const params = new URLSearchParams(location.search);
-  currentSlug  = params.get('slug') ?? '';
+  currentQuery = params.get('q')?.trim() ?? '';
   const page   = Math.max(1, parseInt(params.get('page') || '1', 10));
 
-  if (!currentSlug) {
+  if (!currentQuery) {
     location.replace('/');
     return;
   }
 
-  initNavbar();
-  initFooter();
-  initSearchForm();
-
-  // sidebar en parallèle
-  loadSidebarCategories();
-
-  let category;
-  try {
-    category = await getCategoryBySlug(currentSlug);
-  } catch (err) {
-    loadingEl.hidden = true;
-    errorMsgEl.textContent = 'Catégorie introuvable.';
-    errorEl.hidden = false;
-    return;
-  }
-
-  
-  document.title = `${category.name} — DevFlow`;
+  document.title = `Recherche : ${currentQuery} — DevFlow`;
   document.querySelector('meta[name="description"]')
-    ?.setAttribute('content', category.description || `Articles de la catégorie ${category.name}`);
+    ?.setAttribute('content', `Résultats de recherche pour « ${currentQuery} » sur DevFlow`);
 
-  document.getElementById('cat-name-bc').textContent  = category.name;
-  document.getElementById('cat-title').textContent    = category.name;
+  document.getElementById('cat-name-bc').textContent = `Résultats`;
+  document.getElementById('cat-title').textContent   = `Résultats pour « ${currentQuery} »`;
 
   const descEl = document.getElementById('cat-desc');
-  if (category.description) {
-    descEl.textContent = category.description;
-  } else {
-    descEl.hidden = true;
-  }
+  if (descEl) descEl.hidden = true;
+
+  const input = document.getElementById('search-input');
+  if (input) input.value = currentQuery;
 
   loadingEl.hidden = true;
   mainEl.hidden    = false;
 
+  loadSidebarCategories();
   await loadPage(page);
 }
 

@@ -157,7 +157,7 @@ function initSearchForm() {
     e.preventDefault();
     const q = document.getElementById('search-input')?.value.trim();
     if (q) {
-      location.href = `/?search=${encodeURIComponent(q)}`;
+      location.href = `/search.html?q=${encodeURIComponent(q)}`;
     }
   });
 }

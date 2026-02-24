@@ -165,7 +165,7 @@ function initSearchForm() {
   document.getElementById('search-form')?.addEventListener('submit', e => {
     e.preventDefault();
     const q = document.getElementById('search-input')?.value.trim();
-    if (q) location.href = `/?search=${encodeURIComponent(q)}`;
+    if (q) location.href = `/search.html?q=${encodeURIComponent(q)}`;
   });
 }
 
