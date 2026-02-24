@@ -39,10 +39,18 @@
 
         &__description {
             color: var(--gray-dark);
+            font-family: Inter, sans-serif;
             font-size: f.rem(14);  
             line-height: f.rem(24);
             font-weight: 400; 
             margin-block: 0;
+        }
+
+        &__footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
         }
 
         

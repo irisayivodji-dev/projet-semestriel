@@ -41,6 +41,105 @@ class ArticleRepository extends AbstractRepository {
         return $this->findBy(['status' => $status]);
     }
 
+    public function countPublished(): int
+    {
+        $sql = "SELECT COUNT(*) as total FROM {$this->getTable()} WHERE status = 'published'";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->execute();
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return (int) ($row['total'] ?? 0);
+    }
+
+    public function findPublishedPaginated(int $page = 1, int $perPage = 10): array
+    {
+        $page = max(1, $page);
+        $offset = ($page - 1) * $perPage;
+        $sql = "SELECT * FROM {$this->getTable()}
+                WHERE status = 'published'
+                ORDER BY COALESCE(published_at, updated_at) DESC
+                LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->bindValue(':limit', $perPage, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, Article::class);
+        return $stmt->fetchAll();
+    }
+
+    // ── Filtrage par slug de catégorie ─────────────────────────────────────────
+
+    public function countPublishedByCategorySlug(string $categorySlug): int
+    {
+        $sql = "SELECT COUNT(DISTINCT a.id) AS total
+                FROM {$this->getTable()} a
+                INNER JOIN article_category ac ON a.id = ac.article_id
+                INNER JOIN category c ON c.id = ac.category_id
+                WHERE a.status = 'published' AND c.slug = :slug";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->execute(['slug' => $categorySlug]);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return (int) ($row['total'] ?? 0);
+    }
+
+    public function findPublishedPaginatedByCategorySlug(string $categorySlug, int $page = 1, int $perPage = 10): array
+    {
+        $page   = max(1, $page);
+        $offset = ($page - 1) * $perPage;
+        // GROUP BY a.id (PK) : PostgreSQL autorise ORDER BY sur toutes les colonnes
+        // fonctionnellement dépendantes de la clé primaire, évitant le conflit DISTINCT + COALESCE
+        $sql = "SELECT a.*
+                FROM {$this->getTable()} a
+                INNER JOIN article_category ac ON a.id = ac.article_id
+                INNER JOIN category c ON c.id = ac.category_id
+                WHERE a.status = 'published' AND c.slug = :slug
+                GROUP BY a.id
+                ORDER BY COALESCE(a.published_at, a.updated_at) DESC
+                LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->bindValue(':slug',   $categorySlug);
+        $stmt->bindValue(':limit',  $perPage, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset,  \PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, Article::class);
+        return $stmt->fetchAll();
+    }
+
+    // ── Recherche plein-texte ──────────────────────────────────────────────────
+
+    public function countPublishedBySearch(string $query): int
+    {
+        $like = '%' . $query . '%';
+        // PDO interdit les paramètres nommés dupliqués → :q1 :q2 :q3
+        $sql  = "SELECT COUNT(*) AS total FROM {$this->getTable()}
+                 WHERE status = 'published'
+                 AND (title ILIKE :q1 OR content ILIKE :q2 OR excerpt ILIKE :q3)";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->execute([':q1' => $like, ':q2' => $like, ':q3' => $like]);
+        $row  = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return (int) ($row['total'] ?? 0);
+    }
+
+    public function findPublishedPaginatedBySearch(string $query, int $page = 1, int $perPage = 10): array
+    {
+        $like   = '%' . $query . '%';
+        $page   = max(1, $page);
+        $offset = ($page - 1) * $perPage;
+        // PDO interdit les paramètres nommés dupliqués → :q1 :q2 :q3
+        $sql    = "SELECT * FROM {$this->getTable()}
+                   WHERE status = 'published'
+                   AND (title ILIKE :q1 OR content ILIKE :q2 OR excerpt ILIKE :q3)
+                   ORDER BY COALESCE(published_at, updated_at) DESC
+                   LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->getConnexion()->prepare($sql);
+        $stmt->bindValue(':q1',     $like);
+        $stmt->bindValue(':q2',     $like);
+        $stmt->bindValue(':q3',     $like);
+        $stmt->bindValue(':limit',  $perPage, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset,  \PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, Article::class);
+        return $stmt->fetchAll();
+    }
     //Génère un slug unique en vérifiant s'il existe déjà dans la base de données
     //Si le slug existe, ajoute un suffixe numérique (ex: premier-article-2)
 

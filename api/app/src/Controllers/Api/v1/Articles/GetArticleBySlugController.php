@@ -6,6 +6,7 @@ use App\Lib\Http\Request;
 use App\Lib\Http\Response;
 use App\Lib\Controllers\AbstractController;
 use App\Repositories\ArticleRepository;
+use App\Repositories\UserRepository;
 
 class GetArticleBySlugController extends AbstractController {
     public function process(Request $request): Response
@@ -44,11 +45,27 @@ class GetArticleBySlugController extends AbstractController {
         $categories = $articleRepository->getCategories($article->id);
         $tags = $articleRepository->getTags($article->id);
         
+        // Récupérer les données de l'auteur
+        $userRepository = new UserRepository();
+        $author = $userRepository->find($article->author_id);
+
+        // Récupérer l'image à la une
+        $featuredMedia = $articleRepository->getFeaturedMedia($article->id);
+
         // Convertir l'article en tableau et ajouter les relations
         $articleData = $article->toArray();
         $articleData['categories'] = array_map(fn($cat) => $cat->toArray(), $categories);
         $articleData['tags'] = array_map(fn($tag) => $tag->toArray(), $tags);
-        
+        $articleData['author'] = $author ? [
+            'id'        => $author->id,
+            'firstname' => $author->firstname,
+            'lastname'  => $author->lastname,
+        ] : null;
+        $articleData['cover_image'] = $featuredMedia ? [
+            'url' => '/uploads/' . $featuredMedia->file_path,
+            'alt' => $featuredMedia->alt_text ?: $article->title,
+        ] : null;
+
         return new Response(json_encode([
             'success' => true,
             'article' => $articleData
