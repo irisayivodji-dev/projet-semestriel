@@ -294,8 +294,7 @@
       .card {
         width: 100%;
 
-        // corrige le width: inherit qui hérite 100% du content-box
-        // → l'image doit compenser les 2x padding (20px chaque côté)
+        
         .card__image {
           width: calc(100% + f.rem(40));
         }
@@ -362,7 +361,7 @@
     }
   }
 
-  // ===== BOUTONS =====
+  // boutons
   .btn {
     display: inline-flex;
     align-items: center;
@@ -398,7 +397,7 @@
     &--full { width: 100%; }
   }
 
-  // ===== HERO =====
+  // hero
   .blog-hero {
     position: relative;
     min-height: 520px;
@@ -455,7 +454,7 @@
     }
   }
 
-  // ===== FILTRES CATÉGORIES =====
+  // filtres catégories
   .blog-cats {
     background-color: var(--white);
     border-bottom: 1px solid color-mix(in srgb, var(--black) 10%, transparent);
@@ -492,7 +491,7 @@
     }
   }
 
-  // ===== SECTION TITLE =====
+  // titre de section
   .blog__section-title {
     font-size: f.rem(22);
     font-weight: 700;
@@ -512,7 +511,7 @@
     }
   }
 
-  // ===== PAGINATION =====
+  // pagination
   .blog-pagination {
     display: flex;
     align-items: center;
@@ -573,7 +572,7 @@
     }
   }
 
-  // ===== SIDEBAR =====
+  // sidebar
   .sidebar-card {
     padding: f.rem(24);
     margin-bottom: f.rem(24);
@@ -717,9 +716,4 @@
     }
   }
 
-  // ===== MAIN BLOG (ajustement padding-top pour hero) =====
-  .blog {
-    padding-top: f.rem(40);
-    // ...existing code...
-  }
 }

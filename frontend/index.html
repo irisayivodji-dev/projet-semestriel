@@ -12,32 +12,8 @@
 </head>
 <body>
 
-  <!-- ===== HEADER ===== -->
-  <header class="site-header" id="site-header">
-    <div class="container">
-      <a href="/" class="logo-link">DevFlow</a>
+  <div id="navbar-placeholder"></div>
 
-      <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
-        <ul class="main-nav__list">
-          <li><a href="/" class="main-nav__link">Accueil</a></li>
-          <li><a href="#" class="main-nav__link">À propos</a></li>
-          <li><a href="#" class="main-nav__link">Contact</a></li>
-        </ul>
-        <div class="main-nav__auth">
-          <a href="#" class="main-nav__link">S'inscrire</a>
-          <a href="#" class="main-nav__cta">Se connecter</a>
-        </div>
-      </nav>
-
-      <button class="menu-btn" id="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="main-nav">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
-      </button>
-    </div>
-  </header>
-
-  <!-- ===== HERO ===== -->
   <section class="blog-hero" aria-label="En-tête du blog">
     <div class="blog-hero__overlay"></div>
     <div class="container blog-hero__content">
@@ -47,13 +23,13 @@
         Tutoriels, réflexions et articles autour du développement web,
         des architectures modernes et des bonnes pratiques.
       </p>
-      <a href="#articles" class="button button--primary button--lg">
+      <a href="#articles" class="button button--indigo button--lg">
         Explorer les articles ↓
       </a>
     </div>
   </section>
 
-  <!-- ===== FILTRES CATÉGORIES ===== -->
+  <!--  FILTRES CATÉGORIES -->
   <div class="blog-cats" role="navigation" aria-label="Filtrer par catégorie">
     <div class="container blog-cats__inner">
       <!-- Le bouton "Tous" est fixe ; les autres sont injectés dynamiquement par home.js via GET /api/v1/categories -->
@@ -61,7 +37,7 @@
     </div>
   </div>
 
-  <!-- ===== CONTENU PRINCIPAL ===== -->
+  <!--  CONTENU PRINCIPAL  -->
   <main class="blog" id="articles">
     <div class="container blog__body">
 
@@ -70,7 +46,7 @@
         <h2 class="blog__section-title">Derniers articles publiés</h2>
 
         <div id="articles-loading" class="blog__loading">
-          <span class="spinner spinner--primary spinner--lg"></span>
+          <span class="spinner spinner--indigo spinner--lg"></span>
           <p>Chargement des articles…</p>
         </div>
 
@@ -127,12 +103,8 @@
     </div>
   </main>
 
-  <!-- ===== FOOTER ===== -->
-  <footer class="blog__footer">
-    <div class="container">
-      <p class="blog__footer-text">© 2026 DevFlow — Tous droits réservés.</p>
-    </div>
-  </footer>
+  <!-- ===== FOOTER (injecté par footer.js) ===== -->
+  <div id="footer-placeholder"></div>
 
 </body>
 </html>

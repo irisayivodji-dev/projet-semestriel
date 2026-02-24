@@ -1,19 +1,8 @@
-/**
- * article.js — Page de détail d'un article
- * Inspiré du layout Start Bootstrap blog-post, sans dépendance externe.
- */
 
-const API_BASE = 'http://localhost:8079';
+import { initNavbar } from '../components/navbar.js';
+import { initFooter } from '../components/footer.js';
+import { API_BASE, getArticleBySlug, getCategories } from '../services/api.js';
 
-// --------------------------------------------------------------------------
-// Utilitaires
-// --------------------------------------------------------------------------
-
-/**
- * Formate une date ISO en français (ex: "12 juin 2025").
- * @param {string} isoString
- * @returns {string}
- */
 function formatDate(isoString) {
   if (!isoString) return '';
   return new Date(isoString).toLocaleDateString('fr-FR', {
@@ -23,11 +12,6 @@ function formatDate(isoString) {
   });
 }
 
-/**
- * Génère les initiales d'un auteur pour l'avatar.
- * @param {string} name
- * @returns {string}
- */
 function initials(name) {
   if (!name) return '?';
   return name
@@ -38,16 +22,6 @@ function initials(name) {
     .slice(0, 2);
 }
 
-// --------------------------------------------------------------------------
-// Rendu de l'article
-// --------------------------------------------------------------------------
-
-/**
- * Injecte toutes les données de l'article dans le DOM.
- * @param {{ id: number, title: string, slug: string, content: string,
- *           excerpt: string, author_id: number, created_at: string,
- *           published_at: string, categories: Array, tags: Array }} article
- */
 function renderArticle(article) {
   const {
     title,
@@ -91,22 +65,21 @@ function renderArticle(article) {
 
   const pubDate = published_at || created_at;
   const dateEl = document.getElementById('post-date');
-  dateEl.textContent = formatDate(pubDate);
+  dateEl.textContent = `publié le ${formatDate(pubDate)}`;
   dateEl.setAttribute('datetime', pubDate ?? '');
 
   // Contenu HTML
   const contentEl = document.getElementById('post-content');
   contentEl.innerHTML = content ?? '<p>Aucun contenu disponible.</p>';
 
-  // Image de couverture : vraie image depuis l'API, sinon picsum en fallback
+  // image de couverture
   const coverImg = document.getElementById('post-cover');
   if (coverImg) {
     if (article.cover_image?.url) {
       coverImg.src = `${API_BASE}${article.cover_image.url}`;
       coverImg.alt = article.cover_image.alt || title;
     } else {
-      const seed = encodeURIComponent(article.slug ?? article.id ?? 'article');
-      coverImg.src = `https://picsum.photos/seed/${seed}/900/400`;
+      coverImg.src = 'https://img.freepik.com/free-photo/boy-working-grey-laptop_23-2148190001.jpg';
       coverImg.alt = title;
     }
   }
@@ -124,33 +97,29 @@ function renderArticle(article) {
     tagsEl.hidden = true;
   }
 
-  // Boutons de partage
-  const url = encodeURIComponent(location.href);
-  const encodedTitle = encodeURIComponent(title);
+  // partage
+  const shareUrl = encodeURIComponent(location.href);
+  const shareTitle = encodeURIComponent(title);
   document.getElementById('share-twitter').href =
-    `https://twitter.com/intent/tweet?url=${url}&text=${encodedTitle}`;
+    `https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`;
   document.getElementById('share-linkedin').href =
-    `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-  document.getElementById('share-copy').addEventListener('click', () => {
+    `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`;
+  document.getElementById('share-copy')?.addEventListener('click', () => {
     navigator.clipboard.writeText(location.href).then(() => {
       const btn = document.getElementById('share-copy');
-      const original = btn.textContent.trim();
-      btn.textContent = '✓ Lien copié !';
-      setTimeout(() => {
-        btn.textContent = original;
-      }, 2000);
+      const prev = btn.innerHTML;
+      btn.textContent = '✓ Copié !';
+      setTimeout(() => { btn.innerHTML = prev; }, 2000);
     });
   });
 }
 
 
-// Chargement des catégories (sidebar)
+// catégories (sidebar)
 async function loadSidebarCategories() {
   const container = document.getElementById('sidebar-cats');
   try {
-    const res = await fetch(`${API_BASE}/api/v1/categories`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
+    const data = await getCategories();
     const categories = data.categories ?? data.data ?? [];
 
     if (categories.length === 0) {
@@ -193,58 +162,7 @@ function initReadingBar() {
   updateBar();
 }
 
-// Menu mobile 
-
-function initMenuToggle() {
-  const btn = document.getElementById('menu-btn');
-  const nav = document.getElementById('main-nav');
-  if (!btn || !nav) return;
-
-  btn.addEventListener('click', () => {
-    const open = nav.classList.toggle('main-nav--open');
-    btn.setAttribute('aria-expanded', String(open));
-  });
-}
-
-// Header sticky 
-function initStickyHeader() {
-  const header = document.getElementById('site-header');
-  if (!header) return;
-
-  let lastY = 0;
-  window.addEventListener(
-    'scroll',
-    () => {
-      const y = window.scrollY;
-      header.classList.toggle('site-header--scrolled', y > 10);
-      header.classList.toggle('site-header--hidden', y > lastY && y > 80);
-      lastY = y;
-    },
-    { passive: true }
-  );
-}
-
-
-// Formulaire newsletter
-
-function initNewsletter() {
-  const form = document.getElementById('newsletter-form');
-  if (!form) return;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const input = form.querySelector('input[type="email"]');
-    if (input?.value) {
-      input.value = '';
-      input.placeholder = '✓ Merci pour votre inscription !';
-      setTimeout(() => {
-        input.placeholder = 'votre@email.com';
-      }, 3000);
-    }
-  });
-}
-
-// Formulaire de recherche sidebar → redirige vers l'accueil avec param ?q=
+// recherche → redirige vers l'accueil
 function initSearchForm() {
   const form = document.getElementById('search-form');
   if (!form) return;
@@ -259,9 +177,7 @@ function initSearchForm() {
 }
 
 
-// Point d'entrée
 async function init() {
-  // Récupère le slug depuis l'URL (?slug=mon-article)
   const slug = new URLSearchParams(location.search).get('slug');
 
   const loadingEl = document.getElementById('post-loading');
@@ -269,26 +185,21 @@ async function init() {
   const errorMsg  = document.getElementById('post-error-msg');
   const mainEl    = document.getElementById('post-main');
 
-  // Pas de slug → redirection immédiate
   if (!slug) {
     location.replace('/');
     return;
   }
 
-  // Initialisations UI
-  initMenuToggle();
-  initStickyHeader();
-  initNewsletter();
+  initNavbar();
+  initFooter();
   initSearchForm();
 
-  // Lancer la sidebar en arrière-plan (ne bloque PAS l'article)
+  // sidebar en parallèle
   loadSidebarCategories();
 
-  // Charger l'article
   let articleData;
   try {
-    const res = await fetch(`${API_BASE}/api/v1/articles/slug/${encodeURIComponent(slug)}`);
-    articleData = await res.json();
+    articleData = await getArticleBySlug(slug);
   } catch (err) {
     loadingEl.hidden = true;
     errorMsg.textContent = err.message ?? "Impossible de charger l'article.";
@@ -296,7 +207,6 @@ async function init() {
     return;
   }
 
-  // Masquer le spinner
   loadingEl.hidden = true;
 
   if (!articleData?.success) {
@@ -305,11 +215,8 @@ async function init() {
     return;
   }
 
-  // Rendu de l'article
   renderArticle(articleData.article);
   mainEl.hidden = false;
-
-  // Barre de progression (une fois l'article visible)
   initReadingBar();
 }
 

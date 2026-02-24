@@ -1,4 +1,6 @@
-const API_BASE = 'http://localhost:8079';
+import { initNavbar } from '../components/navbar.js';
+import { initFooter } from '../components/footer.js';
+import { API_BASE, getArticles, getCategories } from '../services/api.js';
 
 const listEl       = document.getElementById('articles-list');
 const loadingEl    = document.getElementById('articles-loading');
@@ -9,6 +11,10 @@ const sectionTitle = document.querySelector('.blog__section-title');
 
 let currentCategory = '';  // slug de catégorie actif
 let currentSearch   = '';  // terme de recherche actif
+
+// layout
+initNavbar();
+initFooter();
 
 // -- utilitaires --
 
@@ -137,20 +143,12 @@ async function loadPage(page = 1, category = '', search = '') {
   paginationEl.hidden = true;
   listEl.innerHTML    = '';
 
-  const url = new URL(`${API_BASE}/api/v1/articles`);
-  url.searchParams.set('page',     page);
-  url.searchParams.set('per_page', 10);
-  if (category) url.searchParams.set('category', category);
-  if (search)   url.searchParams.set('search',   search);
-
   try {
-    const res  = await fetch(url.toString());
-    const data = await res.json();
+    const data = await getArticles({ page, perPage: 10, category, search });
 
     loadingEl.hidden = true;
 
-    if (!res.ok || !data.success) {
-      // Erreur serveur — afficher le détail en console pour le debug
+    if (!data.success) {
       if (data?.error) console.error('[API]', data.error);
       emptyEl.textContent = 'Une erreur est survenue lors du chargement.';
       emptyEl.hidden = false;
@@ -210,12 +208,11 @@ async function loadCategories() {
   if (!catsInnerEl) return;
 
   try {
-    const res  = await fetch(`${API_BASE}/api/v1/categories`);
-    const data = await res.json();
+    const data = await getCategories();
 
     if (!data.success || !data.categories?.length) return;
 
-    // Conserver le bouton "Tous" existant, injecter les catégories réelles
+    // bouton "Tous" fixe + vraies cats de l'API
     catsInnerEl.innerHTML = `
       <a href="#" class="blog-cats__item ${!currentCategory ? 'blog-cats__item--active' : ''}" data-cat="">Tous</a>
       ${data.categories.map(cat => `
@@ -227,7 +224,7 @@ async function loadCategories() {
 
     bindCategoryButtons();
   } catch (err) {
-    // En cas d'échec, les catégories hardcodées restent utilisables
+    // si l'API plante, les boutons hardcodés restent là
     console.warn('[home.js] loadCategories error:', err);
     bindCategoryButtons();
   }
@@ -242,7 +239,7 @@ document.getElementById('search-form')?.addEventListener('submit', e => {
 
   currentSearch   = query;
   currentCategory = '';
-  setActiveCategory(''); // désactiver tous les filtres catégorie
+  setActiveCategory('');
 
   loadPage(1, '', currentSearch);
   document.getElementById('articles')?.scrollIntoView({ behavior: 'smooth' });
@@ -268,38 +265,6 @@ document.querySelectorAll('.sidebar-tags__tag').forEach(tag => {
   });
 });
 
-// -- header sticky --
-
-window.addEventListener('scroll', () => {
-  document.getElementById('site-header')?.classList.toggle('sticky', window.scrollY > 0);
-}, { passive: true });
-
-// -- menu mobile --
-
-document.getElementById('menu-btn')?.addEventListener('click', function () {
-  const nav      = document.getElementById('main-nav');
-  const expanded = this.getAttribute('aria-expanded') === 'true';
-  this.setAttribute('aria-expanded', String(!expanded));
-  nav?.classList.toggle('visible');
-});
-
-document.getElementById('main-nav')?.addEventListener('click', e => {
-  if (e.target.closest('a[href]')) {
-    document.getElementById('main-nav').classList.remove('visible');
-    document.getElementById('menu-btn')?.setAttribute('aria-expanded', 'false');
-  }
-});
-
-// fermer le nav en cliquant le backdrop
-document.addEventListener('click', e => {
-  const nav = document.getElementById('main-nav');
-  const btn = document.getElementById('menu-btn');
-  if (nav?.classList.contains('visible') && !nav.contains(e.target) && !btn?.contains(e.target)) {
-    nav.classList.remove('visible');
-    btn?.setAttribute('aria-expanded', 'false');
-  }
-});
-
 // -- init --
 
 const params   = new URLSearchParams(window.location.search);
@@ -311,8 +276,5 @@ const initSearch = params.get('search') || '';
 if (initCat)    { currentCategory = initCat;    }
 if (initSearch) { currentSearch   = initSearch; }
 
-// Charger les catégories réelles depuis l'API (remplace les hardcodées)
 loadCategories();
-
-// Charger les articles
 loadPage(initPage, initCat, initSearch);

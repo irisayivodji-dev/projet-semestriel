@@ -14,29 +14,8 @@
   <!-- Barre de progression lecture -->
   <div class="reading-bar" id="reading-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progression de lecture"></div>
 
-  <!-- ===== HEADER ===== -->
-  <header class="site-header" id="site-header">
-    <div class="container">
-      <a href="/" class="logo-link">DevFlow</a>
-
-      <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
-        <ul class="clearfix">
-          <li><a href="/">Accueil</a></li>
-          <li><a href="#">À propos</a></li>
-          <li><a href="#">Contact</a></li>
-          <li aria-hidden="true"><a tabindex="-1">|</a></li>
-          <li><a href="#">S'inscrire</a></li>
-          <li><a href="#">Se connecter</a></li>
-        </ul>
-      </nav>
-
-      <button class="menu-btn" id="menu-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="main-nav">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
-      </button>
-    </div>
-  </header>
+  <!-- ===== HEADER (injecté par navbar.js) ===== -->
+  <div id="navbar-placeholder"></div>
 
 
   <main class="post-layout" id="post-layout">
@@ -51,10 +30,10 @@
       <!-- Message d'erreur -->
       <div class="post-error" id="post-error" hidden>
         <p class="post-error__msg" id="post-error-msg">L'article demandé est introuvable.</p>
-        <a href="/" class="button button--primary">← Retour à l'accueil</a>
+        <a href="/" class="button button--indigo">← Retour à l'accueil</a>
       </div>
 
-      <!-- Corps principal de l'article (injecté par article.js) -->
+      <!-- Corps principal de l'article  -->
       <article class="post" id="post-main" hidden>
 
         <!-- En-tête article -->
@@ -149,34 +128,12 @@
           </div>
         </div>
 
-        <!-- Newsletter -->
-        <div class="sidebar-card sidebar-card--dark">
-          <h2 class="sidebar-card__title sidebar-card__title--light">Newsletter</h2>
-          <p class="sidebar-card__desc">Recevez les meilleurs articles directement dans votre boîte mail.</p>
-          <form class="sidebar-newsletter" id="newsletter-form" novalidate>
-            <input
-              type="email"
-              placeholder="votre@email.com"
-              class="sidebar-newsletter__input"
-              required
-              aria-label="Adresse e-mail pour la newsletter"
-            />
-            <button type="submit" class="button button--primary" style="width:100%">
-              S'abonner
-            </button>
-          </form>
-        </div>
-
       </aside>
     </div>
   </main>
 
-  <!-- ===== FOOTER ===== -->
-  <footer class="blog__footer">
-    <div class="container">
-      <p class="blog__footer-text">© 2026 DevFlow — Tous droits réservés.</p>
-    </div>
-  </footer>
+  <!-- ===== FOOTER (injecté par footer.js) ===== -->
+  <div id="footer-placeholder"></div>
 
 </body>
 </html>
