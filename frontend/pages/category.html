@@ -10,11 +10,12 @@
   <script type="module" src="/src/main.js"></script>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Aller au contenu</a>
 
   <div id="navbar-placeholder"></div>
 
   <!-- chargement initial -->
-  <div id="cat-loading" class="cat-loading">
+  <div id="cat-loading" class="cat-loading" aria-live="polite">
     <span class="spinner spinner--indigo spinner--lg"></span>
     <p>Chargement de la catégorie…</p>
   </div>
@@ -43,13 +44,13 @@
     </section>
 
     <!-- liste des articles -->
-    <main class="blog" id="articles" aria-label="Articles de la catégorie">
+    <main class="blog" id="main-content" aria-label="Articles de la catégorie">
       <div class="container blog__body">
 
         <!-- grille articles -->
         <div class="blog__content">
 
-          <div id="articles-loading" class="blog__loading">
+          <div id="articles-loading" class="blog__loading" aria-live="polite">
             <span class="spinner spinner--indigo spinner--lg"></span>
             <p>Chargement des articles…</p>
           </div>

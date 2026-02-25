@@ -42,7 +42,7 @@ function buildArticleItem(article) {
   const excerpt  = getExcerpt(article);
   const rawDate  = article.published_at || article.updated_at || article.created_at;
   const slug     = article.slug || article.id;
-  const link     = `/article.html?slug=${encodeURIComponent(slug)}`;
+  const link     = `/pages/article.html?slug=${encodeURIComponent(slug)}`;
   const readTime = estimateReadTime(article);
 
   const imgSrc = article.cover_image?.url
@@ -110,16 +110,30 @@ function buildPagination(currentPage, totalPages) {
 }
 
 
+function showSkeletons(count = 6) {
+  listLoadEl.hidden = true;
+  listEl.hidden     = false;
+  listEl.innerHTML  = Array.from({ length: count }).map(() => `
+    <li class="blog__grid-col">
+      <div class="card card--skeleton">
+        <span class="skeleton skeleton--img"></span>
+        <span class="skeleton skeleton--meta"></span>
+        <span class="skeleton skeleton--title"></span>
+        <span class="skeleton skeleton--text"></span>
+        <span class="skeleton skeleton--text skeleton--short"></span>
+        <span class="skeleton skeleton--btn"></span>
+      </div>
+    </li>`).join('');
+}
+
 async function loadPage(page = 1) {
-  listLoadEl.hidden = false;
+  showSkeletons(6);
   emptyEl.hidden    = true;
-  listEl.hidden     = true;
   paginationEl.hidden = true;
-  listEl.innerHTML  = '';
 
   const data = await getArticles({ page, perPage: 10, category: currentSlug });
 
-  listLoadEl.hidden = true;
+  listEl.innerHTML = '';
 
   if (!data.success) {
     emptyEl.textContent = 'Une erreur est survenue lors du chargement.';
@@ -152,7 +166,7 @@ async function loadSidebarCategories() {
     const cats = data.categories ?? [];
     if (!cats.length) return;
     container.innerHTML = cats
-      .map(c => `<a href="/category.html?slug=${encodeURIComponent(c.slug)}" class="sidebar-categories__item${c.slug === currentSlug ? ' sidebar-categories__item--active' : ''}">${escapeHtml(c.name)}</a>`)
+      .map(c => `<a href="/pages/category.html?slug=${encodeURIComponent(c.slug)}" class="sidebar-categories__item${c.slug === currentSlug ? ' sidebar-categories__item--active' : ''}">${escapeHtml(c.name)}</a>`)
       .join('');
   } catch {
     container.innerHTML = '<p class="sidebar-categories__empty">Erreur de chargement.</p>';
@@ -163,7 +177,7 @@ function initSearchForm() {
   document.getElementById('search-form')?.addEventListener('submit', e => {
     e.preventDefault();
     const q = document.getElementById('search-input')?.value.trim();
-    if (q) location.href = `/search.html?q=${encodeURIComponent(q)}`;
+    if (q) location.href = `/pages/search.html?q=${encodeURIComponent(q)}`;
   });
 }
 

@@ -11,6 +11,7 @@
   <script type="module" src="/src/main.js"></script>
 </head>
 <body>
+  <a href="#articles" class="skip-link">Aller au contenu</a>
 
   <div id="navbar-placeholder"></div>
 
@@ -30,11 +31,11 @@
   </section>
 
   <!--  FILTRES CATÉGORIES -->
-  <div class="blog-cats" role="navigation" aria-label="Filtrer par catégorie">
+  <nav class="blog-cats" aria-label="Filtrer par catégorie">
     <div class="container blog-cats__inner">
       <a href="#" class="blog-cats__item blog-cats__item--active" data-cat="">Tous</a>
     </div>
-  </div>
+  </nav>
 
   <main class="blog" id="articles">
     <div class="container blog__body">
@@ -42,7 +43,7 @@
       <div class="blog__content">
         <h2 class="blog__section-title">Derniers articles publiés</h2>
 
-        <div id="articles-loading" class="blog__loading">
+        <div id="articles-loading" class="blog__loading" aria-live="polite">
           <span class="spinner spinner--indigo spinner--lg"></span>
           <p>Chargement des articles…</p>
         </div>

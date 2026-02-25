@@ -5,10 +5,11 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: "index.html",
-        article: "article.html",
-        category: "category.html",
-        tag: "tag.html",
-        search: "search.html",
+        article: "pages/article.html",
+        category: "pages/category.html",
+        tag: "pages/tag.html",
+        search: "pages/search.html",
+        legal: "pages/legal.html"
       },
       output: {
         entryFileNames: "assets/js/[name].js",

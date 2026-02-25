@@ -61,7 +61,7 @@ function buildArticleItem(article) {
   const excerpt    = getExcerpt(article);
   const rawDate    = article.published_at || article.updated_at || article.created_at;
   const slug       = article.slug || article.id;
-  const link       = `/article.html?slug=${encodeURIComponent(slug)}`;
+  const link       = `/pages/article.html?slug=${encodeURIComponent(slug)}`;
   const readTime   = estimateReadTime(article);
 
   const imgSrc = article.cover_image?.url
@@ -132,19 +132,33 @@ function buildPagination(currentPage, totalPages) {
   return `<ul class="pagination__list">${items.join('')}</ul>`;
 }
 
+function showSkeletons(count = 6) {
+  loadingEl.hidden = true;
+  listEl.hidden    = false;
+  listEl.innerHTML = Array.from({ length: count }).map(() => `
+    <li class="blog__grid-col">
+      <div class="card card--skeleton">
+        <span class="skeleton skeleton--img"></span>
+        <span class="skeleton skeleton--meta"></span>
+        <span class="skeleton skeleton--title"></span>
+        <span class="skeleton skeleton--text"></span>
+        <span class="skeleton skeleton--text skeleton--short"></span>
+        <span class="skeleton skeleton--btn"></span>
+      </div>
+    </li>`).join('');
+}
+
 // chargement articles
 
 async function loadPage(page = 1, category = '', search = '') {
-  loadingEl.hidden    = false;
+  showSkeletons(6);
   emptyEl.hidden      = true;
-  listEl.hidden       = true;
   paginationEl.hidden = true;
-  listEl.innerHTML    = '';
 
   try {
     const data = await getArticles({ page, perPage: 10, category, search });
 
-    loadingEl.hidden = true;
+    listEl.innerHTML = '';
 
     if (!data.success) {
       if (data?.error) console.error('[API]', data.error);
@@ -171,7 +185,8 @@ async function loadPage(page = 1, category = '', search = '') {
 
     updateSectionTitle();
   } catch (err) {
-    loadingEl.hidden    = true;
+    listEl.innerHTML    = '';
+    listEl.hidden       = true;
     emptyEl.textContent = 'Erreur lors du chargement des articles.';
     emptyEl.hidden      = false;
     console.error('[home.js] loadPage error:', err);
@@ -235,7 +250,7 @@ async function loadTags() {
     if (!data.success || !data.tags?.length) return;
 
     tagsInnerEl.innerHTML = data.tags.map(tag => `
-      <a href="/tag.html?slug=${encodeURIComponent(tag.slug)}" class="sidebar-tags__tag">
+      <a href="/pages/tag.html?slug=${encodeURIComponent(tag.slug)}" class="sidebar-tags__tag">
         ${escapeHtml(tag.name)}
       </a>
     `).join('');
