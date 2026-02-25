@@ -13,11 +13,7 @@ const FOOTER_HTML = `
       </div>
 
       <nav class="site-footer__nav" aria-label="Navigation du pied de page">
-        <ul>
-          <li><a href="/">Accueil</a></li>
-          <li><a href="#">À propos</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
+         <a href="/pages/legal.html" class="site-footer__link">Mentions légales</a>
       </nav>
 
     </div>

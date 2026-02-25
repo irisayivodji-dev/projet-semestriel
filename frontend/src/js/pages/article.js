@@ -42,7 +42,7 @@ function renderArticle(article) {
   // Fil d'Ariane
   if (categories.length > 0) {
     document.getElementById('bc-category').textContent = categories[0].name;
-    document.getElementById('bc-category').href = `/category.html?slug=${encodeURIComponent(categories[0].slug)}`;
+    document.getElementById('bc-category').href = `/pages/category.html?slug=${encodeURIComponent(categories[0].slug)}`;
   }
 
   // Badges catégories
@@ -50,7 +50,7 @@ function renderArticle(article) {
   catsEl.innerHTML = categories
     .map(
       (c) =>
-        `<a href="/category.html?slug=${encodeURIComponent(c.slug)}" class="post__cat-badge">${c.name}</a>`
+          `<a href="/pages/category.html?slug=${encodeURIComponent(c.slug)}" class="post__cat-badge">${c.name}</a>`
     )
     .join('');
 
@@ -98,21 +98,6 @@ function renderArticle(article) {
     tagsEl.hidden = true;
   }
 
-  // partage
-  const shareUrl = encodeURIComponent(location.href);
-  const shareTitle = encodeURIComponent(title);
-  document.getElementById('share-twitter').href =
-    `https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`;
-  document.getElementById('share-linkedin').href =
-    `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`;
-  document.getElementById('share-copy')?.addEventListener('click', () => {
-    navigator.clipboard.writeText(location.href).then(() => {
-      const btn = document.getElementById('share-copy');
-      const prev = btn.innerHTML;
-      btn.textContent = '✓ Copié !';
-      setTimeout(() => { btn.innerHTML = prev; }, 2000);
-    });
-  });
 }
 
 
@@ -131,7 +116,7 @@ async function loadSidebarCategories() {
     container.innerHTML = categories
       .map(
         (c) =>
-          `<a href="/category.html?slug=${encodeURIComponent(c.slug)}" class="sidebar-categories__item">${c.name}</a>`
+          `<a href="/pages/category.html?slug=${encodeURIComponent(c.slug)}" class="sidebar-categories__item">${c.name}</a>`
       )
       .join('');
   } catch {
@@ -172,7 +157,7 @@ function initSearchForm() {
     e.preventDefault();
     const q = document.getElementById('search-input')?.value.trim();
     if (q) {
-      location.href = `/?search=${encodeURIComponent(q)}`;
+      location.href = `/pages/search.html?q=${encodeURIComponent(q)}`;
     }
   });
 }

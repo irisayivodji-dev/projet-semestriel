@@ -1,6 +1,6 @@
 import { initNavbar } from '../components/navbar.js';
 import { initFooter } from '../components/footer.js';
-import { API_BASE, getCategoryBySlug, getArticles, getCategories } from '../services/api.js';
+import { API_BASE, getTagBySlug, getArticlesByTagId, getCategories } from '../services/api.js';
 
 const loadingEl    = document.getElementById('cat-loading');
 const errorEl      = document.getElementById('cat-error');
@@ -110,6 +110,8 @@ function buildPagination(currentPage, totalPages) {
 }
 
 
+let currentTagId = null;
+
 function showSkeletons(count = 6) {
   listLoadEl.hidden = true;
   listEl.hidden     = false;
@@ -131,7 +133,7 @@ async function loadPage(page = 1) {
   emptyEl.hidden    = true;
   paginationEl.hidden = true;
 
-  const data = await getArticles({ page, perPage: 10, category: currentSlug });
+  const data = await getArticlesByTagId(currentTagId, page, 10);
 
   listEl.innerHTML = '';
 
@@ -142,7 +144,7 @@ async function loadPage(page = 1) {
   }
 
   if (!data.articles || data.articles.length === 0) {
-    emptyEl.textContent = 'Aucun article dans cette catégorie pour le moment.';
+    emptyEl.textContent = 'Aucun article pour ce tag pour le moment.';
     emptyEl.hidden = false;
     return;
   }
@@ -199,27 +201,28 @@ async function init() {
   // sidebar en parallèle
   loadSidebarCategories();
 
-  let category;
+  let tag;
   try {
-    category = await getCategoryBySlug(currentSlug);
+    tag = await getTagBySlug(currentSlug);
   } catch (err) {
     loadingEl.hidden = true;
-    errorMsgEl.textContent = 'Catégorie introuvable.';
+    errorMsgEl.textContent = 'Tag introuvable.';
     errorEl.hidden = false;
     return;
   }
 
-  
-  document.title = `${category.name} — DevFlow`;
-  document.querySelector('meta[name="description"]')
-    ?.setAttribute('content', category.description || `Articles de la catégorie ${category.name}`);
+  currentTagId = tag.id;
 
-  document.getElementById('cat-name-bc').textContent  = category.name;
-  document.getElementById('cat-title').textContent    = category.name;
+  document.title = `#${tag.name} — DevFlow`;
+  document.querySelector('meta[name="description"]')
+    ?.setAttribute('content', `Articles tagués ${tag.name} sur DevFlow`);
+
+  document.getElementById('cat-name-bc').textContent  = tag.name;
+  document.getElementById('cat-title').textContent    = `#${tag.name}`;
 
   const descEl = document.getElementById('cat-desc');
-  if (category.description) {
-    descEl.textContent = category.description;
+  if (tag.description) {
+    descEl.textContent = tag.description;
   } else {
     descEl.hidden = true;
   }

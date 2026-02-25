@@ -1,12 +1,13 @@
 import { initNavbar } from '../components/navbar.js';
 import { initFooter } from '../components/footer.js';
-import { API_BASE, getArticles, getCategories } from '../services/api.js';
+import { API_BASE, getArticles, getCategories, getTags } from '../services/api.js';
 
 const listEl       = document.getElementById('articles-list');
 const loadingEl    = document.getElementById('articles-loading');
 const emptyEl      = document.getElementById('articles-empty');
 const paginationEl = document.getElementById('articles-pagination');
 const catsInnerEl  = document.querySelector('.blog-cats__inner');
+const tagsInnerEl  = document.querySelector('.sidebar-tags');
 const sectionTitle = document.querySelector('.blog__section-title');
 
 let currentCategory = '';  // slug de catégorie actif
@@ -15,8 +16,6 @@ let currentSearch   = '';  // terme de recherche actif
 // layout
 initNavbar();
 initFooter();
-
-// -- utilitaires --
 
 function escapeHtml(text) {
   if (!text) return '';
@@ -42,7 +41,6 @@ function estimateReadTime(article) {
   return `${Math.max(1, Math.ceil(words / 200))} min de lecture`;
 }
 
-// -- titre de section --
 
 function updateSectionTitle() {
   if (!sectionTitle) return;
@@ -57,13 +55,13 @@ function updateSectionTitle() {
   }
 }
 
-// -- carte article --
+//carte article 
 
 function buildArticleItem(article) {
   const excerpt    = getExcerpt(article);
   const rawDate    = article.published_at || article.updated_at || article.created_at;
   const slug       = article.slug || article.id;
-  const link       = `/article.html?slug=${encodeURIComponent(slug)}`;
+  const link       = `/pages/article.html?slug=${encodeURIComponent(slug)}`;
   const readTime   = estimateReadTime(article);
 
   const imgSrc = article.cover_image?.url
@@ -95,7 +93,7 @@ function buildArticleItem(article) {
   return li;
 }
 
-// -- pagination --
+// pagination 
 
 function buildPagination(currentPage, totalPages) {
   if (totalPages <= 1) return '';
@@ -134,19 +132,33 @@ function buildPagination(currentPage, totalPages) {
   return `<ul class="pagination__list">${items.join('')}</ul>`;
 }
 
-// -- chargement articles --
+function showSkeletons(count = 6) {
+  loadingEl.hidden = true;
+  listEl.hidden    = false;
+  listEl.innerHTML = Array.from({ length: count }).map(() => `
+    <li class="blog__grid-col">
+      <div class="card card--skeleton">
+        <span class="skeleton skeleton--img"></span>
+        <span class="skeleton skeleton--meta"></span>
+        <span class="skeleton skeleton--title"></span>
+        <span class="skeleton skeleton--text"></span>
+        <span class="skeleton skeleton--text skeleton--short"></span>
+        <span class="skeleton skeleton--btn"></span>
+      </div>
+    </li>`).join('');
+}
+
+// chargement articles
 
 async function loadPage(page = 1, category = '', search = '') {
-  loadingEl.hidden    = false;
+  showSkeletons(6);
   emptyEl.hidden      = true;
-  listEl.hidden       = true;
   paginationEl.hidden = true;
-  listEl.innerHTML    = '';
 
   try {
     const data = await getArticles({ page, perPage: 10, category, search });
 
-    loadingEl.hidden = true;
+    listEl.innerHTML = '';
 
     if (!data.success) {
       if (data?.error) console.error('[API]', data.error);
@@ -173,14 +185,15 @@ async function loadPage(page = 1, category = '', search = '') {
 
     updateSectionTitle();
   } catch (err) {
-    loadingEl.hidden    = true;
+    listEl.innerHTML    = '';
+    listEl.hidden       = true;
     emptyEl.textContent = 'Erreur lors du chargement des articles.';
     emptyEl.hidden      = false;
     console.error('[home.js] loadPage error:', err);
   }
 }
 
-// -- filtres catégories --
+// filtres catégories 
 
 function setActiveCategory(slug) {
   currentCategory = slug;
@@ -212,7 +225,7 @@ async function loadCategories() {
 
     if (!data.success || !data.categories?.length) return;
 
-    // bouton "Tous" fixe + vraies cats de l'API
+    // bouton "Tous" fixe 
     catsInnerEl.innerHTML = `
       <a href="#" class="blog-cats__item ${!currentCategory ? 'blog-cats__item--active' : ''}" data-cat="">Tous</a>
       ${data.categories.map(cat => `
@@ -224,13 +237,29 @@ async function loadCategories() {
 
     bindCategoryButtons();
   } catch (err) {
-    // si l'API plante, les boutons hardcodés restent là
     console.warn('[home.js] loadCategories error:', err);
     bindCategoryButtons();
   }
 }
+async function loadTags() {
+  if (!tagsInnerEl) return;
 
-// -- recherche --
+  try {
+    const data = await getTags();
+
+    if (!data.success || !data.tags?.length) return;
+
+    tagsInnerEl.innerHTML = data.tags.map(tag => `
+      <a href="/pages/tag.html?slug=${encodeURIComponent(tag.slug)}" class="sidebar-tags__tag">
+        ${escapeHtml(tag.name)}
+      </a>
+    `).join('');
+  } catch (err) {
+    console.warn('[home.js] loadTags error:', err);
+  }
+}
+
+// recherche
 
 document.getElementById('search-form')?.addEventListener('submit', e => {
   e.preventDefault();
@@ -254,7 +283,7 @@ document.getElementById('search-input')?.addEventListener('input', function () {
   }
 });
 
-// -- tags sidebar --
+// tags sidebar 
 
 document.querySelectorAll('.sidebar-tags__tag').forEach(tag => {
   tag.addEventListener('click', e => {
@@ -265,7 +294,7 @@ document.querySelectorAll('.sidebar-tags__tag').forEach(tag => {
   });
 });
 
-// -- init --
+// init
 
 const params   = new URLSearchParams(window.location.search);
 const initPage = Math.max(1, parseInt(params.get('page') || '1', 10));
@@ -277,4 +306,5 @@ if (initCat)    { currentCategory = initCat;    }
 if (initSearch) { currentSearch   = initSearch; }
 
 loadCategories();
+loadTags();
 loadPage(initPage, initCat, initSearch);

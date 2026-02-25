@@ -59,4 +59,25 @@ img{
     height: auto;
 }
 
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: var(--indigo);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0 0 4px 4px;
+    font-weight: 600;
+    z-index: 9999;
+    transition: top 0.1s;
+    &:focus {
+        top: 0;
+    }
+}
+
+:focus-visible {
+    outline: 3px solid var(--indigo);
+    outline-offset: 3px;
+}
+
 }

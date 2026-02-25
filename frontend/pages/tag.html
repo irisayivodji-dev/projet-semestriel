@@ -3,59 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catégorie — DevFlow</title>
-  <meta name="description" content="Articles par catégorie sur DevFlow." />
+  <title>Tag — DevFlow</title>
+  <meta name="description" content="Articles par tags sur DevFlow." />
   <link rel="stylesheet" href="/src/css/main.scss" />
-  <script type="module" src="/src/js/pages/category.js"></script>
+  <script type="module" src="/src/js/pages/tag.js"></script>
   <script type="module" src="/src/main.js"></script>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Aller au contenu</a>
 
   <div id="navbar-placeholder"></div>
 
-  <!-- chargement initial -->
-  <div id="cat-loading" class="cat-loading">
+  <div id="cat-loading" class="cat-loading" aria-live="polite">
     <span class="spinner spinner--indigo spinner--lg"></span>
-    <p>Chargement de la catégorie…</p>
+    <p>Chargement du tag…</p>
   </div>
-
-  <!-- catégorie introuvable -->
   <div id="cat-error" class="cat-error" hidden>
-    <p id="cat-error-msg" class="cat-error__msg">Catégorie introuvable.</p>
+    <p id="cat-error-msg" class="cat-error__msg">Tag introuvable.</p>
     <a href="/" class="button button--indigo">Retour à l'accueil</a>
   </div>
 
   
   <div id="cat-main" hidden>
 
-    <!-- hero catégorie -->
-    <section class="cat-hero" aria-label="En-tête catégorie">
+    <section class="cat-hero" aria-label="En-tête tag">
       <div class="container cat-hero__inner">
         <nav class="cat-hero__breadcrumb" aria-label="Fil d'Ariane">
           <a href="/">Accueil</a>
           <span aria-hidden="true">›</span>
           <span id="cat-name-bc"></span>
         </nav>
-        <span class="cat-hero__label">Catégorie</span>
+        <span class="cat-hero__label">Tag</span>
         <h1 class="cat-hero__title" id="cat-title"></h1>
         <p class="cat-hero__desc" id="cat-desc"></p>
       </div>
     </section>
 
     <!-- liste des articles -->
-    <main class="blog" id="articles" aria-label="Articles de la catégorie">
+    <main class="blog" id="main-content" aria-label="Articles du tag">
       <div class="container blog__body">
 
-        <!-- grille articles -->
+        
         <div class="blog__content">
 
-          <div id="articles-loading" class="blog__loading">
+          <div id="articles-loading" class="blog__loading" aria-live="polite">
             <span class="spinner spinner--indigo spinner--lg"></span>
             <p>Chargement des articles…</p>
           </div>
 
           <div id="articles-empty" class="blog__empty" hidden>
-            Aucun article dans cette catégorie pour le moment.
+            Aucun article ayant pour le moment ce tag.
           </div>
 
           <ul id="articles-list" class="blog__grid" hidden></ul>
@@ -86,7 +83,7 @@
             </form>
           </div>
 
-          <!-- toutes les catégories -->
+          
           <div class="sidebar-card">
             <h3 class="sidebar-card__title">Catégories</h3>
             <div id="sidebar-cats" class="sidebar-categories">
