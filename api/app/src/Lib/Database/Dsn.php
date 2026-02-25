@@ -15,11 +15,11 @@ class Dsn {
     public function __construct() {
         $config = self::getConfig();
 
-        $this->host = $config['host'];
-        $this->user = $config['user'];
-        $this->password = $config['password'];
-        $this->dbname = $config['database'];
-        $this->port = $config['port'];
+        $this->host     = $_ENV['PGHOST']     ?? $_ENV['DB_HOST']     ?? $config['host'];
+        $this->user     = $_ENV['PGUSER']     ?? $_ENV['DB_USER']     ?? $config['user'];
+        $this->password = $_ENV['PGPASSWORD'] ?? $_ENV['DB_PASSWORD'] ?? $config['password'];
+        $this->dbname   = $_ENV['PGDATABASE'] ?? $_ENV['DB_NAME']     ?? $config['database'];
+        $this->port     = (int)($_ENV['PGPORT'] ?? $_ENV['DB_PORT']   ?? $config['port']);
         $this->dsn = 'pgsql:';
     }
 
