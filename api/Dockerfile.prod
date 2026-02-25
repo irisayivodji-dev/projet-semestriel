@@ -1,0 +1,36 @@
+FROM php:8.4-apache
+
+# --- Extensions PHP ---
+RUN apt-get update -y && apt-get upgrade -y \
+    && apt-get install -y zlib1g-dev libwebp-dev libpng-dev \
+    && docker-php-ext-install gd \
+    && apt-get install -y libzip-dev \
+    && docker-php-ext-install zip \
+    && apt-get install -y libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql pgsql
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh \
+    && bash nodesource_setup.sh \
+    && apt-get install -y nodejs \
+    && npm install -g sass
+
+RUN a2enmod rewrite
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
+
+COPY php.ini /usr/local/etc/php/conf.d/uploads.ini
+
+WORKDIR /var/www/html
+
+COPY app/ .
+
+RUN composer install --no-dev --optimize-autoloader
+
+RUN sass assets/main.scss dist/css/main.css --style=compressed
+
+# --- Permissions ---
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/uploads
+
+EXPOSE 80
